@@ -25,6 +25,7 @@ class Airplane():
         # Creating a Passenger for each seat and assigns the seat for them. Passengers to be kept in this list
         self.passengers = [ Passenger(iSeat, 0.5) for iSeat in seatList ]
         # Copies list of passengers into waiting list. Same objects kept in both list (elements fo lists works as pointers)
+        # TODO: implement different ways of ordering passengers
         self.waitingList = list(self.passengers)
 
         self.aisle = ['' for iRows in range(nRows)]
@@ -48,6 +49,7 @@ class Airplane():
         self.status = 'boarded'
         print self.rightHandSeats
         print self.leftHandSeats
+        print self.tBoarding
 
 
     def proceedBoarding(self):
@@ -64,7 +66,7 @@ class Airplane():
             # Check if by their seat row, if so start packing
             if (not aisleSpot == '') and aisleSpot.seat['row'] == iAisleSpot and aisleSpot.status == 'walking':
                 aisleSpot.status = 'packing'
-                aisleSpot.t = random.random()   # Packing time distribution should be changed
+                aisleSpot.t = random.random()   # TODO: Packing time distribution should be changed
 
             # Check if they account for next event to occur, if so set the time to elapse (tNextEvent) to their time t
             if ((not aisleSpot == '') and aisleSpot.t < tNextEvent
@@ -82,7 +84,7 @@ class Airplane():
 
         # Move passenger to next spot in aisle
         if actingAgent.status == 'walking':
-            actingAgent.t = random.random()  #Random time to walk one row
+            actingAgent.t = random.random()  #Random time to walk one row # TODO: distribution for walking times, include speed?
             self.aisle[iNextEvent + 1] = actingAgent
             self.aisle[iNextEvent] = ''
         # Passenger sits down
