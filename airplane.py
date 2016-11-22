@@ -71,6 +71,8 @@ class Airplane():
             # Check if they account for next event to occur, if so set the time to elapse (tNextEvent) to their time t
             if ((not aisleSpot == '') and aisleSpot.t < tNextEvent
                 and (self.aisle[np.minimum(iAisleSpot + 1, self.nRows-1)] == '' or not aisleSpot.status == 'walking')):
+                if aisleSpot.t < 0:
+                    aisleSpot.t = 0
                 tNextEvent = aisleSpot.t
                 iNextEvent = iAisleSpot
 
