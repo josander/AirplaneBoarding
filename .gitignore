@@ -47,3 +47,4 @@ Thumbs.db
 # Movies
 *.mp4
 *.pyc
+*.idea*
