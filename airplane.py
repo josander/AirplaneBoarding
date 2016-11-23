@@ -1,37 +1,74 @@
 import numpy as np
 import random
+import itertools
 
 class Passenger():
     nPassenger = 0  # Class variable keeping track of the number of passengers in total
-    def __init__(self, seat, speed):
+    speedMu = 1 # A: average passenger speed when walking unblocked in rows/second
+    speedSigma = 0.2 # A: stddev
+    def __init__(self, seat): # A: removed speed as an argument, as it's drawn from distribution below
         self.seat = seat    # Of form {'side':'L', 'row':0, 'number': 0}. row 0 is by entrance, number 0 is by aisle
-        self.speed = speed
+        self.speed = random.gauss(self.speedMu, self.speedSigma)
         self.i = self.nPassenger    # Assigning unique index for every passenger
         self.nPassenger += 1
         self.status = 'waiting'     # Statuses 'waiting', 'walking', 'packing', 'sitting'
 
 class Airplane():
-    def __init__(self, nRows, nSeatsPerSide):
+    def __init__(self, nRows, nSeatsPerSide, boardMethod):
         self.nRows = nRows
         self.nSeatsPerRow = nSeatsPerSide
+        self.boardMethod = boardMethod
         self.tBoarding = 0
         self.status = 'empty'
 
+
         # Create a list of all seats available in the flight
-        leftSeatList = [{'side':'L', 'row':iRow, 'number':iNumber} for iRow, iNumber in np.ndindex((nRows,nSeatsPerSide))]
-        rightSeatList = [{'side':'R', 'row':iRow, 'number':iNumber} for iRow, iNumber in np.ndindex((nRows,nSeatsPerSide))]
-        seatList = leftSeatList + rightSeatList
+        #leftSeatList = [{'side':'L', 'row':iRow, 'number':iNumber} for iRow, iNumber in np.ndindex((nRows,nSeatsPerSide))]
+        #rightSeatList = [{'side':'R', 'row':iRow, 'number':iNumber} for iRow, iNumber in np.ndindex((nRows,nSeatsPerSide))]
+        # A: I re-ordered seats to have all those on the same row together
+        seatList = [{'side':iSide, 'row':iRow, 'number':iNumber} for iRow in range(nRows) for iSide in ['L','R']
+                    for iNumber in range(nSeatsPerSide)]
 
         # Creating a Passenger for each seat and assigns the seat for them. Passengers to be kept in this list
-        self.passengers = [ Passenger(iSeat, 0.5) for iSeat in seatList ]
-        # Copies list of passengers into waiting list. Same objects kept in both list (elements fo lists works as pointers)
-        # TODO: implement different ways of ordering passengers
-        self.waitingList = list(self.passengers)
+        # A: changed because speed was removed as parameter self.passengers = [ Passenger(iSeat, 0.5) for iSeat in seatList ]
+        self.passengers = [ Passenger(iSeat) for iSeat in seatList ]
+        self.nPassengers = len(self.passengers)
+
+        # A: different ways of ordering passengers TODO: flying carpet
+        # Copies list of passengers into temporary waiting list.
+        # Same objects kept in both list (elements fo lists works as pointers)
+        tempWaitingList = list(self.passengers)
+        if self.boardMethod == 'random': # A: completely random boarding
+            random.shuffle(tempWaitingList)
+            self.waitingList = tempWaitingList
+        elif self.boardMethod == 'backToFront': # A: the common boarding by zones, from back to front
+            blocks = 4 # A: number of blocks/zones to divide the passengers
+            blockSize = self.nPassengers / blocks
+            self.waitingList = []
+            for iBlocks in range(blocks-1):
+                chunk = tempWaitingList[iBlocks*blockSize:(iBlocks+1)*blockSize]
+                random.shuffle(chunk)
+                self.waitingList.append(chunk)
+            chunk = tempWaitingList[(blocks-1)*blockSize:] # A: from the last block to the end, to account for nSeats%blocks~=0
+            random.shuffle(chunk)
+            self.waitingList.append(chunk)
+            self.waitingList = list(itertools.chain.from_iterable(self.waitingList))
+            self.waitingList.reverse()
+        elif self.boardMethod == 'outsideIn': # A: 3 groups; windows first, then middle, then aisle, each group randomly
+            self.waitingList = []
+            for iSeatNumber in range(nSeatsPerSide):
+                chunk = [tempWaitingList[iOutside] for iOutside in range(self.nPassengers) if
+                         tempWaitingList[iOutside].seat['number'] == iSeatNumber]
+                random.shuffle(chunk)
+                self.waitingList.append(chunk)
+            self.waitingList = list(itertools.chain.from_iterable(self.waitingList))
+            self.waitingList.reverse()
+        else:
+            self.waitingList = tempWaitingList
 
         self.aisle = ['' for iRows in range(nRows)]
         self.leftHandSeats = [[ '' for iSeats in range(nSeatsPerSide)] for iRows in range(nRows)]
         self.rightHandSeats = [['' for iSeats in range(nSeatsPerSide)] for iRows in range(nRows)]
-        self.nPassengers = len(self.passengers)
         self.nSeatedPassengers = 0
 
     # To be removed. Functionality implemented in function board()
@@ -55,6 +92,8 @@ class Airplane():
     def proceedBoarding(self):
         tNextEvent = 100000     # Large number, used to calculate next event
         iNextEvent = 0
+        packMu = 8 # A: mean time and stdev [sec] to pack carry-on luggage
+        packSigma = 2 # A: source: flight attendant friend :P
         # Move first person in waiting list into empty spot in aisle if not occupied
         if self.aisle[0] == '' and (not self.waitingList == []):
             self.aisle[0] = self.waitingList.pop(0)
@@ -66,7 +105,7 @@ class Airplane():
             # Check if by their seat row, if so start packing
             if (not aisleSpot == '') and aisleSpot.seat['row'] == iAisleSpot and aisleSpot.status == 'walking':
                 aisleSpot.status = 'packing'
-                aisleSpot.t = random.random()   # TODO: Packing time distribution should be changed
+                aisleSpot.t = random.gauss(packMu, packSigma)
 
             # Check if they account for next event to occur, if so set the time to elapse (tNextEvent) to their time t
             if ((not aisleSpot == '') and aisleSpot.t < tNextEvent
@@ -86,10 +125,11 @@ class Airplane():
 
         # Move passenger to next spot in aisle
         if actingAgent.status == 'walking':
-            actingAgent.t = random.random()  #Random time to walk one row # TODO: distribution for walking times, include speed?
+            actingAgent.t = 1/actingAgent.speed  # A: Time to walk one row
             self.aisle[iNextEvent + 1] = actingAgent
             self.aisle[iNextEvent] = ''
         # Passenger sits down
+        # TODO: implement delay if access to actingAgent's seat is blocked
         elif actingAgent.status == 'packing':
             if actingAgent.seat['side'] == 'L':
                 self.leftHandSeats[actingAgent.seat['row']][actingAgent.seat['number']] = actingAgent
@@ -99,5 +139,5 @@ class Airplane():
             self.aisle[iNextEvent] = ''
             self.nSeatedPassengers += 1
 
-airplane = Airplane(20,3)
+airplane = Airplane(20,3,'outsideIn')
 airplane.board()
