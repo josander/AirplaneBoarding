@@ -65,9 +65,7 @@ class Airplane():
         while self.nSeatedPassengers < self.nPassengers:
             self.proceedBoarding()
         self.status = 'boarded'
-        print self.rightHandSeats
-        print self.leftHandSeats
-        print self.tBoarding
+        #print self.tBoarding
 
 
     def proceedBoarding(self):
@@ -110,7 +108,7 @@ class Airplane():
             self.aisle[iNextEvent + 1] = actingAgent
             self.aisle[iNextEvent] = ''
         # Passenger sits down
-        # TODO: implement delay if access to actingAgent's seat is blocked
+        # TODO: add time if seated passengers in the way
         elif actingAgent.status == 'packing':
             if actingAgent.seat['side'] == 'L':
                 self.leftHandSeats[actingAgent.seat['row']][actingAgent.seat['number']] = actingAgent
@@ -152,7 +150,6 @@ class Airplane():
         self.waitingList = list(itertools.chain.from_iterable(self.waitingList))
         self.waitingList.reverse()
 
-        # TODO: Implement flying carpet properly
     def flyingCarpetBoarding(self):
         tempWaitingList = list(self.passengers)
         randomOrder = np.random.permutation(self.nPassengers)
@@ -172,5 +169,5 @@ class Airplane():
         self.waitingList = [tempWaitingList[iOrder] for iOrder in flyingCarpetOrder]
         self.waitingList.reverse()
 
-airplane = Airplane(20,3,'flyingCarpet')
-airplane.board()
+#airplane = Airplane(10,3,'flyingCarpet')
+#airplane.board()
