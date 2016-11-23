@@ -155,16 +155,22 @@ class Airplane():
         # TODO: Implement flying carpet properly
     def flyingCarpetBoarding(self):
         tempWaitingList = list(self.passengers)
+        randomOrder = np.random.permutation(self.nPassengers)
         blocks = 4  # A: number of blocks/zones to divide the passengers
         blockSize = self.nPassengers / blocks
-        self.waitingList = []
+        flyingCarpetOrder = []
+
         for iBlocks in range(blocks - 1):
-            chunk = tempWaitingList[iBlocks * blockSize:(iBlocks + 1) * blockSize]
-            random.shuffle(chunk)
-            self.waitingList.append(chunk)
-        chunk = tempWaitingList[
-                (blocks - 1) * blockSize:]  # A: from the last block to the end, to account for nSeats%blocks~=0
-        random.shuffle(chunk)
-        self.waitingList.append(chunk)
-        self.waitingList = list(itertools.chain.from_iterable(self.waitingList))
+            chunk = randomOrder[iBlocks * blockSize:(iBlocks + 1) * blockSize]
+            chunk.sort()
+            flyingCarpetOrder.extend(chunk)
+
+        chunk = randomOrder[(blocks - 1) * blockSize:]  # A: from the last block to the end, to account for nSeats%blocks~=0
+        chunk.sort()
+        flyingCarpetOrder.extend(chunk)
+
+        self.waitingList = [tempWaitingList[iOrder] for iOrder in flyingCarpetOrder]
         self.waitingList.reverse()
+
+airplane = Airplane(20,3,'flyingCarpet')
+airplane.board()

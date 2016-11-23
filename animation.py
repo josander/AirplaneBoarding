@@ -1,7 +1,11 @@
+import matplotlib
+matplotlib.use('TKAgg')
+
 import airplane
 import matplotlib.animation as anim
 import matplotlib.pyplot as plt
 import numpy as np
+
 
 # Animates the boarding process for the airplane model specified below. Saves animation to filename
 # Equal spacing between all frames makes time spacing irregular since we don't work with continuous time.
@@ -10,8 +14,8 @@ import numpy as np
 
 nRows = 20
 nSeatsPerRow = 3
-myAirplane = airplane.Airplane(nRows, nSeatsPerRow)
-filename = 'test.mp4'
+myAirplane = airplane.Airplane(nRows, nSeatsPerRow,'flyingCarpet')
+filename = 'flyingCarpet.mp4'
 
 # Basic figure properties
 fig = plt.figure()

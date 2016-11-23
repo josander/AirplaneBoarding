@@ -43,3 +43,7 @@ ehthumbs.db
 Thumbs.db
 *~
 .nfs*
+
+# Movies
+*.mp4
+*.pyc
