@@ -34,37 +34,18 @@ class Airplane():
         self.passengers = [ Passenger(iSeat) for iSeat in seatList ]
         self.nPassengers = len(self.passengers)
 
-        # A: different ways of ordering passengers TODO: flying carpet
-        # Copies list of passengers into temporary waiting list.
+        # A: different ways of ordering passengers
         # Same objects kept in both list (elements fo lists works as pointers)
-        tempWaitingList = list(self.passengers)
         if self.boardMethod == 'random': # A: completely random boarding
-            random.shuffle(tempWaitingList)
-            self.waitingList = tempWaitingList
+            self.randomBoarding()
         elif self.boardMethod == 'backToFront': # A: the common boarding by zones, from back to front
-            blocks = 4 # A: number of blocks/zones to divide the passengers
-            blockSize = self.nPassengers / blocks
-            self.waitingList = []
-            for iBlocks in range(blocks-1):
-                chunk = tempWaitingList[iBlocks*blockSize:(iBlocks+1)*blockSize]
-                random.shuffle(chunk)
-                self.waitingList.append(chunk)
-            chunk = tempWaitingList[(blocks-1)*blockSize:] # A: from the last block to the end, to account for nSeats%blocks~=0
-            random.shuffle(chunk)
-            self.waitingList.append(chunk)
-            self.waitingList = list(itertools.chain.from_iterable(self.waitingList))
-            self.waitingList.reverse()
+            self.backToFrontBarding()
         elif self.boardMethod == 'outsideIn': # A: 3 groups; windows first, then middle, then aisle, each group randomly
-            self.waitingList = []
-            for iSeatNumber in range(nSeatsPerSide):
-                chunk = [tempWaitingList[iOutside] for iOutside in range(self.nPassengers) if
-                         tempWaitingList[iOutside].seat['number'] == iSeatNumber]
-                random.shuffle(chunk)
-                self.waitingList.append(chunk)
-            self.waitingList = list(itertools.chain.from_iterable(self.waitingList))
-            self.waitingList.reverse()
+            self.outsideInBoarding()
+        elif self.boardMethod == 'flyingCarpet':
+            self.flyingCarpetBoarding()
         else:
-            self.waitingList = tempWaitingList
+            self.waitingList = list(self.passengers)
 
         self.aisle = ['' for iRows in range(nRows)]
         self.leftHandSeats = [[ '' for iSeats in range(nSeatsPerSide)] for iRows in range(nRows)]
@@ -139,5 +120,51 @@ class Airplane():
             self.aisle[iNextEvent] = ''
             self.nSeatedPassengers += 1
 
-airplane = Airplane(20,3,'outsideIn')
-airplane.board()
+    def randomBoarding(self):
+        tempWaitingList = list(self.passengers)
+        random.shuffle(tempWaitingList)
+        self.waitingList = tempWaitingList
+
+    def backToFrontBarding(self):
+        tempWaitingList = list(self.passengers)
+        blocks = 4  # A: number of blocks/zones to divide the passengers
+        blockSize = self.nPassengers / blocks
+        self.waitingList = []
+        for iBlocks in range(blocks - 1):
+            chunk = tempWaitingList[iBlocks * blockSize:(iBlocks + 1) * blockSize]
+            random.shuffle(chunk)
+            self.waitingList.append(chunk)
+        chunk = tempWaitingList[
+                (blocks - 1) * blockSize:]  # A: from the last block to the end, to account for nSeats%blocks~=0
+        random.shuffle(chunk)
+        self.waitingList.append(chunk)
+        self.waitingList = list(itertools.chain.from_iterable(self.waitingList))
+        self.waitingList.reverse()
+
+    def outsideInBoarding(self):
+        tempWaitingList = list(self.passengers)
+        self.waitingList = []
+        for iSeatNumber in range(self.nSeatsPerRow):
+            chunk = [tempWaitingList[iOutside] for iOutside in range(self.nPassengers) if
+                     tempWaitingList[iOutside].seat['number'] == iSeatNumber]
+            random.shuffle(chunk)
+            self.waitingList.append(chunk)
+        self.waitingList = list(itertools.chain.from_iterable(self.waitingList))
+        self.waitingList.reverse()
+
+        # TODO: Implement flying carpet properly
+    def flyingCarpetBoarding(self):
+        tempWaitingList = list(self.passengers)
+        blocks = 4  # A: number of blocks/zones to divide the passengers
+        blockSize = self.nPassengers / blocks
+        self.waitingList = []
+        for iBlocks in range(blocks - 1):
+            chunk = tempWaitingList[iBlocks * blockSize:(iBlocks + 1) * blockSize]
+            random.shuffle(chunk)
+            self.waitingList.append(chunk)
+        chunk = tempWaitingList[
+                (blocks - 1) * blockSize:]  # A: from the last block to the end, to account for nSeats%blocks~=0
+        random.shuffle(chunk)
+        self.waitingList.append(chunk)
+        self.waitingList = list(itertools.chain.from_iterable(self.waitingList))
+        self.waitingList.reverse()
