@@ -2,6 +2,8 @@ import numpy as np
 import random
 import itertools
 
+# TODO: Could be interesting to investigate how much waiting time (inside the airplane) there is for each individual
+
 class Passenger():
     nPassenger = 0  # Class variable keeping track of the number of passengers in total
     speedMu = 1 # A: average passenger speed when walking unblocked in rows/second

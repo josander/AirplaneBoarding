@@ -22,6 +22,7 @@ fig = plt.figure()
 ax = fig.add_subplot(111)
 ax.axis([-0.5, 2*myAirplane.nSeatsPerRow + 0.5, -0.5, myAirplane.nRows - 0.5])
 ax.set_aspect((2*myAirplane.nSeatsPerRow + 1.0)/myAirplane.nRows)
+txt = fig.suptitle('Elapsed time = %.2f seconds'%(myAirplane.tBoarding))
 
 # Sets tick labels to corresponding row and seat numbers and
 xTickPositions = range(2*myAirplane.nSeatsPerRow+1)
@@ -74,21 +75,25 @@ line3, = ax.plot(seats, rows, 'og', ms=15, label='Seated')
 ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), numpoints = 1)
 
 def updatefig(*args):
-    myAirplane.proceedBoarding()
-    rows, seats, spots, packingSpots = getPositions()
-    line1.set_xdata(myAirplane.nSeatsPerRow*np.ones(len(spots)))
-    line1.set_ydata(spots)
-    line2.set_xdata(myAirplane.nSeatsPerRow*np.ones(len(packingSpots)))
-    line2.set_ydata(packingSpots)
-    line3.set_xdata(seats)
-    line3.set_ydata(rows)
 
-    fig.suptitle('Elapsed time = %.2f seconds'%(myAirplane.tBoarding))
+    if myAirplane.nSeatedPassengers < myAirplane.nPassengers:
+        myAirplane.proceedBoarding()
+
+        rows, seats, spots, packingSpots = getPositions()
+        line1.set_xdata(myAirplane.nSeatsPerRow*np.ones(len(spots)))
+        line1.set_ydata(spots)
+        line2.set_xdata(myAirplane.nSeatsPerRow*np.ones(len(packingSpots)))
+        line2.set_ydata(packingSpots)
+        line3.set_xdata(seats)
+        line3.set_ydata(rows)
+
+        txt.set_text('Elapsed time = %.2f seconds'%(myAirplane.tBoarding))
+
     return line1, line2, line3
 
 
 Writer = anim.writers['ffmpeg']
-writer = Writer(fps=15, metadata=dict(artist='Me'), bitrate=1800)
+writer = Writer(fps=25, metadata=dict(artist='Me'), bitrate=1800)
 
-a = anim.FuncAnimation(fig, updatefig, interval = 50, save_count = 1500, blit = True)
+a = anim.FuncAnimation(fig, updatefig, interval = 25, save_count = 1500, blit = True)
 a.save(filename, writer=writer)
