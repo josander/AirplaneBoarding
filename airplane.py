@@ -75,6 +75,8 @@ class Airplane():
         iNextEvent = 0
         packMu = 8 # A: mean time and stdev [sec] to pack carry-on luggage
         packSigma = 2 # A: source: flight attendant friend :P
+        interferenceMu = 8 # Extra time to get seated if there's a passenger in the way
+        interferenceSigma = 2
         # Move first person in waiting list into empty spot in aisle if not occupied
         if self.aisle[0] == '' and (not self.waitingList == []):
             self.aisle[0] = self.waitingList.pop(0)
@@ -109,9 +111,20 @@ class Airplane():
             actingAgent.t = 1/actingAgent.speed  # A: Time to walk one row
             self.aisle[iNextEvent + 1] = actingAgent
             self.aisle[iNextEvent] = ''
-        # Passenger sits down
-        # TODO: add time if seated passengers in the way
+        # Passenger starts trying to sit down but interferes with already seated passengers
         elif actingAgent.status == 'packing':
+            actingAgent.status = 'interfering'
+            if actingAgent.seat['side'] == 'L':
+                for iSeat, seat in enumerate(self.leftHandSeats[actingAgent.seat['row']]):
+                    if (iSeat < actingAgent.seat['number']) and (not (seat == '')):
+                        actingAgent.t = random.gauss(interferenceMu, interferenceSigma)
+
+            else:
+                for iSeat, seat in enumerate(self.rightHandSeats[actingAgent.seat['row']]):
+                    if (iSeat < actingAgent.seat['number']) and (not (seat == '')):
+                        actingAgent.t = random.gauss(interferenceMu, interferenceSigma)
+        # Passenger sits down
+        elif actingAgent.status == 'interfering':
             if actingAgent.seat['side'] == 'L':
                 self.leftHandSeats[actingAgent.seat['row']][actingAgent.seat['number']] = actingAgent
             else:
