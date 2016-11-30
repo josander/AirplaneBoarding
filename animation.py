@@ -12,7 +12,7 @@ import numpy as np
 # Don't know if a fix is necessary
 # Program stops through crashing due to construction of Airplane.proceedBoarding()
 
-nRows = 10
+nRows = 20
 nSeatsPerRow = 2
 myAirplane = airplane.Airplane(nRows, nSeatsPerRow,'flyingCarpet')
 filename = 'flyingCarpet.mp4'

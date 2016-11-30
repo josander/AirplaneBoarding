@@ -16,12 +16,13 @@ class Passenger():
         self.status = 'waiting'     # Statuses 'waiting', 'walking', 'packing', 'sitting'
 
 class Airplane():
-    def __init__(self, nRows, nSeatsPerSide, boardMethod):
+    def __init__(self, nRows, nSeatsPerSide, boardMethod, blockSize=4):
         self.nRows = nRows
         self.nSeatsPerRow = nSeatsPerSide
         self.boardMethod = boardMethod
         self.tBoarding = 0
         self.status = 'empty'
+        self.blockSize = blockSize
 
 
         # Create a list of all seats available in the flight
@@ -73,9 +74,9 @@ class Airplane():
     def proceedBoarding(self):
         tNextEvent = 100000     # Large number, used to calculate next event
         iNextEvent = 0
-        packMu = 8 # A: mean time and stdev [sec] to pack carry-on luggage
+        packMu = 6 # A: mean time and stdev [sec] to pack carry-on luggage
         packSigma = 2 # A: source: flight attendant friend :P
-        interferenceMu = 8 # Extra time to get seated if there's a passenger in the way
+        interferenceMu = 6 # Extra time to get seated if there's a passenger in the way
         interferenceSigma = 2
         # Move first person in waiting list into empty spot in aisle if not occupied
         if self.aisle[0] == '' and (not self.waitingList == []):
@@ -140,7 +141,7 @@ class Airplane():
 
     def backToFrontBarding(self):
         tempWaitingList = list(self.passengers)
-        blocks = 4  # A: number of blocks/zones to divide the passengers
+        blocks = self.blockSize  # A: number of blocks/zones to divide the passengers
         blockSize = self.nPassengers / blocks
         self.waitingList = []
         for iBlocks in range(blocks - 1):
@@ -168,7 +169,7 @@ class Airplane():
     def flyingCarpetBoarding(self):
         tempWaitingList = list(self.passengers)
         randomOrder = np.random.permutation(self.nPassengers)
-        blocks = 4  # A: number of blocks/zones to divide the passengers
+        blocks = self.blockSize  # A: number of blocks/zones to divide the passengers
         blockSize = self.nPassengers / blocks
         flyingCarpetOrder = []
 

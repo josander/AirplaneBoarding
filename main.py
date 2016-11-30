@@ -2,10 +2,11 @@ import airplane
 import numpy as np
 
 
-nIterations = 20
+nIterations = 10
 
 nSeatsPerSide = [2, 3]
-nRows = [10, 20, 30]
+nRows = [10, 15, 20, 25, 30, 35, 40, 45]
+
 
 
 timeForRandom = [nIterations]
