@@ -28,14 +28,17 @@ class animatedAirplane(airplane.Airplane):
                     rows.append(iRow)
                     seats.append((self.nSeatsPerRow + 1) + iSeat)
         spots = []
+        interferingSpots = []
         packingSpots = []
         for iSpot, spot in enumerate(self.aisle):
             if not spot == '':
                 if spot.status == 'walking':
                     spots.append(iSpot)
+                elif spot.status == 'interfering':
+                    interferingSpots.append(iSpot)
                 else:
                     packingSpots.append(iSpot)
-        return rows, seats, spots, packingSpots
+        return rows, seats, spots, interferingSpots, packingSpots
 
 
     def updatefig(self, *args):
@@ -43,17 +46,19 @@ class animatedAirplane(airplane.Airplane):
         if self.nSeatedPassengers < self.nPassengers:
             self.proceedBoarding()
 
-            rows, seats, spots, packingSpots = self.getPositions()
+            rows, seats, spots, interferingSpots, packingSpots = self.getPositions()
             self.line1.set_xdata(self.nSeatsPerRow*np.ones(len(spots)))
             self.line1.set_ydata(spots)
             self.line2.set_xdata(self.nSeatsPerRow*np.ones(len(packingSpots)))
             self.line2.set_ydata(packingSpots)
-            self.line3.set_xdata(seats)
-            self.line3.set_ydata(rows)
+            self.line3.set_xdata(self.nSeatsPerRow*np.ones(len(interferingSpots)))
+            self.line3.set_ydata(interferingSpots)
+            self.line4.set_xdata(seats)
+            self.line4.set_ydata(rows)
 
             self.txt.set_text('Elapsed time = %.2f seconds'%(self.tBoarding))
 
-        return self.line1, self.line2, self.line3
+        return self.line1, self.line2, self.line3, self.line4
 
     def animate(self, filename):
         # Basic figure properties
@@ -81,10 +86,11 @@ class animatedAirplane(airplane.Airplane):
             ax.plot([-0.5,self.nSeatsPerRow-0.5],[y,y], '-k')
             ax.plot([self.nSeatsPerRow+0.5, 2*self.nSeatsPerRow+0.5], [y,y], '-k')
         # Instantiate line objects holding positions of passengers. Red for passengers in aisle, green for seated passengers
-        rows, seats, spots, packingSpots = self.getPositions()
+        rows, seats, spots, interferingSpots, packingSpots = self.getPositions()
         self.line1, = ax.plot(self.nSeatsPerRow*np.ones(len(spots)), spots, 'or', ms = 15, label='Walking')
         self.line2, = ax.plot(self.nSeatsPerRow*np.ones(len(packingSpots)),packingSpots, 'ob', ms = 15, label='Packing')
-        self.line3, = ax.plot(seats, rows, 'og', ms=15, label='Seated')
+        self.line3, = ax.plot(self.nSeatsPerRow*np.ones(len(interferingSpots)), interferingSpots, 'oy', ms=15, label='Interfering')
+        self.line4, = ax.plot(seats, rows, 'og', ms=15, label='Seated')
 
         ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), numpoints = 1)
 
