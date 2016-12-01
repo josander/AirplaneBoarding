@@ -99,9 +99,15 @@ class animatedAirplane(airplane.Airplane):
 
         a = anim.FuncAnimation(fig, self.updatefig, interval = 25, save_count = 1500, blit = True)
         a.save(filename, writer=writer)
-airplane1 = animatedAirplane(10, 2, 'flyingCarpet')
+
+nRows = 10
+nSeatsPerRow = 3
+
+airplane1 = animatedAirplane(nRows, nSeatsPerRow, 'flyingCarpet')
 airplane1.animate('flyingCarpet.mp4')
-airplane2 = animatedAirplane(15, 3, 'backToFront')
+airplane2 = animatedAirplane(nRows, nSeatsPerRow, 'backToFront')
 airplane2.animate('backToFront.mp4')
-airplane3 = animatedAirplane(15, 3, 'random')
+airplane3 = animatedAirplane(nRows, nSeatsPerRow, 'random')
 airplane3.animate('random.mp4')
+airplane4 = animatedAirplane(nRows, nSeatsPerRow, 'outsideIn')
+airplane4.animate('outsideIn.mp4')

@@ -4,11 +4,14 @@ import numpy as np
 
 nIterations = 10
 
-nSeatsPerSide = [2, 3]
-list = range(40)
-nRows = list[10::2]
-nBlocks = 2
 
+# Dimensions of airplane
+nSeatsPerSide = [2, 3]
+rowList = range(40)
+nRows = rowList[20::10]
+
+# Nbr of blocks to board
+nBlocks = 2
 
 
 timeForRandom = [nIterations]
@@ -48,8 +51,8 @@ for iSeatsPerSide in range(len(nSeatsPerSide)):
             timeForFlyingCarpet.append(myAirplane.tBoarding)
 
 
-        print('Nbr of rows: %.0f \t Seats per side: %.0f' % (nRows[iRows], nSeatsPerSide[iSeatsPerSide]) )
-        print '___________________________________________'
+        print('Nbr of rows: %.0f \t Seats per side: %.0f \t Nbr of blocks: %.0f' % (nRows[iRows], nSeatsPerSide[iSeatsPerSide], nBlocks) )
+        print '___________________________________________________________'
         print('Boarding strategy \t Mean \t\t Std')
         print('Random boarding \t %.2f \t %.2f' % (np.mean(timeForRandom),np.std(timeForRandom)) )
         print('Back to front \t\t %.2f \t %.2f' % (np.mean(timeForBackToFront),np.std(timeForBackToFront)) )
@@ -58,7 +61,7 @@ for iSeatsPerSide in range(len(nSeatsPerSide)):
         print ' '
 
         # Print to file
-        f.write('%.0f \t %.0f \n' % (nRows[iRows], nSeatsPerSide[iSeatsPerSide]) )
+        f.write('%.0f \t %.0f \t %.0f \n' % (nRows[iRows], nSeatsPerSide[iSeatsPerSide], nBlocks) )
         f.write('%.2f \t %.2f \n' % (np.mean(timeForRandom),np.std(timeForRandom)) )
         f.write('%.2f \t %.2f \n' % (np.mean(timeForBackToFront),np.std(timeForBackToFront)) )
         f.write('%.2f \t %.2f \n' % (np.mean(timeForOutsideIn),np.std(timeForOutsideIn)) )
@@ -66,4 +69,8 @@ for iSeatsPerSide in range(len(nSeatsPerSide)):
 
 
 f.close()
+
+
+
+
 
