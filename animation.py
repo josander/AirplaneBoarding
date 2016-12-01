@@ -12,88 +12,90 @@ import numpy as np
 # Don't know if a fix is necessary
 # Program stops through crashing due to construction of Airplane.proceedBoarding()
 
-nRows = 20
-nSeatsPerRow = 2
-myAirplane = airplane.Airplane(nRows, nSeatsPerRow,'flyingCarpet')
-filename = 'flyingCarpet.mp4'
-
-# Basic figure properties
-fig = plt.figure()
-ax = fig.add_subplot(111)
-ax.axis([-0.5, 2*myAirplane.nSeatsPerRow + 0.5, -0.5, myAirplane.nRows - 0.5])
-ax.set_aspect((2*myAirplane.nSeatsPerRow + 1.0)/myAirplane.nRows)
-txt = fig.suptitle('Elapsed time = %.2f seconds'%(myAirplane.tBoarding))
-
-# Sets tick labels to corresponding row and seat numbers and
-xTickPositions = range(2*myAirplane.nSeatsPerRow+1)
-xTicks = list(reversed(range(myAirplane.nSeatsPerRow))) + ['Aisle'] + range(myAirplane.nSeatsPerRow)
-plt.xticks(xTickPositions, xTicks)
-yTickPositions = range(myAirplane.nRows)
-plt.yticks(yTickPositions)
-ax.xaxis.set_ticks_position('none')
-ax.yaxis.set_ticks_position('none')
-pos = ax.get_position()
-ax.set_position([pos.x0 - 0.1, pos.y0, pos.width, pos.height])
-
-# Adds grid lines
-for x in np.arange(0.5, 2*myAirplane.nSeatsPerRow, 1.0):
-    ax.axvline(x,color = 'k')
-for y in np.arange(0.5,myAirplane.nRows, 1.0):
-    ax.plot([-0.5,myAirplane.nSeatsPerRow-0.5],[y,y], '-k')
-    ax.plot([myAirplane.nSeatsPerRow+0.5, 2*myAirplane.nSeatsPerRow+0.5], [y,y], '-k')
-
-def getPositions():
-    # Returns positions of seated passengers and passengers in aisle
-    rows = []
-    seats = []
-    for iRow, row in enumerate(myAirplane.leftHandSeats):
-        for iSeat, seat in enumerate(row):
-            if not seat == '':
-                rows.append(iRow)
-                seats.append((myAirplane.nSeatsPerRow - 1) - iSeat)
-    for iRow, row in enumerate(myAirplane.rightHandSeats):
-        for iSeat, seat in enumerate(row):
-            if not seat == '':
-                rows.append(iRow)
-                seats.append((myAirplane.nSeatsPerRow + 1) + iSeat)
-    spots = []
-    packingSpots = []
-    for iSpot, spot in enumerate(myAirplane.aisle):
-        if not spot == '':
-            if spot.status == 'walking':
-                spots.append(iSpot)
-            else:
-                packingSpots.append(iSpot)
-    return rows, seats, spots, packingSpots
-
-# Instantiate line objects holding positions of passengers. Red for passengers in aisle, green for seated passengers
-rows, seats, spots, packingSpots = getPositions()
-line1, = ax.plot(myAirplane.nSeatsPerRow*np.ones(len(spots)), spots, 'or', ms = 15, label='Walking')
-line2, = ax.plot(myAirplane.nSeatsPerRow*np.ones(len(packingSpots)),packingSpots, 'ob', ms = 15, label='Packing')
-line3, = ax.plot(seats, rows, 'og', ms=15, label='Seated')
-
-ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), numpoints = 1)
-
-def updatefig(*args):
-
-    if myAirplane.nSeatedPassengers < myAirplane.nPassengers:
-        myAirplane.proceedBoarding()
-
-        rows, seats, spots, packingSpots = getPositions()
-        line1.set_xdata(myAirplane.nSeatsPerRow*np.ones(len(spots)))
-        line1.set_ydata(spots)
-        line2.set_xdata(myAirplane.nSeatsPerRow*np.ones(len(packingSpots)))
-        line2.set_ydata(packingSpots)
-        line3.set_xdata(seats)
-        line3.set_ydata(rows)
-
-        txt.set_text('Elapsed time = %.2f seconds'%(myAirplane.tBoarding))
-
-    return line1, line2, line3
+class animatedAirplane(airplane.Airplane):
+    def getPositions(self):
+        # Returns positions of seated passengers and passengers in aisle
+        rows = []
+        seats = []
+        for iRow, row in enumerate(self.leftHandSeats):
+            for iSeat, seat in enumerate(row):
+                if not seat == '':
+                    rows.append(iRow)
+                    seats.append((self.nSeatsPerRow - 1) - iSeat)
+        for iRow, row in enumerate(self.rightHandSeats):
+            for iSeat, seat in enumerate(row):
+                if not seat == '':
+                    rows.append(iRow)
+                    seats.append((self.nSeatsPerRow + 1) + iSeat)
+        spots = []
+        packingSpots = []
+        for iSpot, spot in enumerate(self.aisle):
+            if not spot == '':
+                if spot.status == 'walking':
+                    spots.append(iSpot)
+                else:
+                    packingSpots.append(iSpot)
+        return rows, seats, spots, packingSpots
 
 
-Writer = anim.writers['ffmpeg']
-writer = Writer(fps=25, metadata=dict(artist='Me'), bitrate=1800)
+    def updatefig(self, *args):
 
-a = anim.FuncAnimation(fig, updatefig, interval = 25, save_count = 1500, blit = True)
-a.save(filename, writer=writer)
+        if self.nSeatedPassengers < self.nPassengers:
+            self.proceedBoarding()
+
+            rows, seats, spots, packingSpots = self.getPositions()
+            self.line1.set_xdata(self.nSeatsPerRow*np.ones(len(spots)))
+            self.line1.set_ydata(spots)
+            self.line2.set_xdata(self.nSeatsPerRow*np.ones(len(packingSpots)))
+            self.line2.set_ydata(packingSpots)
+            self.line3.set_xdata(seats)
+            self.line3.set_ydata(rows)
+
+            self.txt.set_text('Elapsed time = %.2f seconds'%(self.tBoarding))
+
+        return self.line1, self.line2, self.line3
+
+    def animate(self, filename):
+        # Basic figure properties
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        ax.axis([-0.5, 2*self.nSeatsPerRow + 0.5, -0.5, self.nRows - 0.5])
+        ax.set_aspect((2*self.nSeatsPerRow + 1.0)/self.nRows)
+        self.txt = fig.suptitle('Elapsed time = %.2f seconds'%(self.tBoarding))
+
+        # Sets tick labels to corresponding row and seat numbers and
+        xTickPositions = range(2*self.nSeatsPerRow+1)
+        xTicks = list(reversed(range(self.nSeatsPerRow))) + ['Aisle'] + range(self.nSeatsPerRow)
+        plt.xticks(xTickPositions, xTicks)
+        yTickPositions = range(self.nRows)
+        plt.yticks(yTickPositions)
+        ax.xaxis.set_ticks_position('none')
+        ax.yaxis.set_ticks_position('none')
+        pos = ax.get_position()
+        ax.set_position([pos.x0 - 0.1, pos.y0, pos.width, pos.height])
+
+        # Adds grid lines
+        for x in np.arange(0.5, 2*self.nSeatsPerRow, 1.0):
+            ax.axvline(x,color = 'k')
+        for y in np.arange(0.5,self.nRows, 1.0):
+            ax.plot([-0.5,self.nSeatsPerRow-0.5],[y,y], '-k')
+            ax.plot([self.nSeatsPerRow+0.5, 2*self.nSeatsPerRow+0.5], [y,y], '-k')
+        # Instantiate line objects holding positions of passengers. Red for passengers in aisle, green for seated passengers
+        rows, seats, spots, packingSpots = self.getPositions()
+        self.line1, = ax.plot(self.nSeatsPerRow*np.ones(len(spots)), spots, 'or', ms = 15, label='Walking')
+        self.line2, = ax.plot(self.nSeatsPerRow*np.ones(len(packingSpots)),packingSpots, 'ob', ms = 15, label='Packing')
+        self.line3, = ax.plot(seats, rows, 'og', ms=15, label='Seated')
+
+        ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), numpoints = 1)
+
+        Writer = anim.writers['ffmpeg']
+        writer = Writer(fps=25, metadata=dict(artist='Me'), bitrate=1800)
+
+        a = anim.FuncAnimation(fig, self.updatefig, interval = 25, save_count = 1500, blit = True)
+        a.save(filename, writer=writer)
+airplane1 = animatedAirplane(10, 2, 'flyingCarpet')
+airplane1.animate('flyingCarpet.mp4')
+airplane2 = animatedAirplane(15, 3, 'backToFront')
+airplane2.animate('backToFront.mp4')
+airplane3 = animatedAirplane(15, 3, 'random')
+airplane3.animate('random.mp4')
