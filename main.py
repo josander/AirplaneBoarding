@@ -5,7 +5,9 @@ import numpy as np
 nIterations = 10
 
 nSeatsPerSide = [2, 3]
-nRows = [10, 15, 20, 25, 30, 35, 40, 45]
+list = range(40)
+nRows = list[10::2]
+nBlocks = 2
 
 
 
@@ -23,25 +25,25 @@ for iSeatsPerSide in range(len(nSeatsPerSide)):
 
         # Random boarding
         for iIteration in range(nIterations):
-            myAirplane = airplane.Airplane(nRows[iRows], nSeatsPerSide[iSeatsPerSide], 'random')
+            myAirplane = airplane.Airplane(nRows[iRows], nSeatsPerSide[iSeatsPerSide], 'random', nBlocks)
             myAirplane.board()
             timeForRandom.append(myAirplane.tBoarding)
 
         # Back to front boarding
         for iIteration in range(nIterations):
-            myAirplane = airplane.Airplane(nRows[iRows], nSeatsPerSide[iSeatsPerSide], 'backToFront')
+            myAirplane = airplane.Airplane(nRows[iRows], nSeatsPerSide[iSeatsPerSide], 'backToFront', nBlocks)
             myAirplane.board()
             timeForBackToFront.append(myAirplane.tBoarding)
 
         # Outside in boarding
         for iIteration in range(nIterations):
-            myAirplane = airplane.Airplane(nRows[iRows], nSeatsPerSide[iSeatsPerSide], 'outsideIn')
+            myAirplane = airplane.Airplane(nRows[iRows], nSeatsPerSide[iSeatsPerSide], 'outsideIn', nBlocks)
             myAirplane.board()
             timeForOutsideIn.append(myAirplane.tBoarding)
 
         # Flying carpet boarding
         for iIteration in range(nIterations):
-            myAirplane = airplane.Airplane(nRows[iRows], nSeatsPerSide[iSeatsPerSide], 'flyingCarpet')
+            myAirplane = airplane.Airplane(nRows[iRows], nSeatsPerSide[iSeatsPerSide], 'flyingCarpet', nBlocks)
             myAirplane.board()
             timeForFlyingCarpet.append(myAirplane.tBoarding)
 

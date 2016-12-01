@@ -16,13 +16,13 @@ class Passenger():
         self.status = 'waiting'     # Statuses 'waiting', 'walking', 'packing', 'sitting'
 
 class Airplane():
-    def __init__(self, nRows, nSeatsPerSide, boardMethod, blockSize=4):
+    def __init__(self, nRows, nSeatsPerSide, boardMethod, nBlocks=4):
         self.nRows = nRows
         self.nSeatsPerRow = nSeatsPerSide
         self.boardMethod = boardMethod
         self.tBoarding = 0
         self.status = 'empty'
-        self.blockSize = blockSize
+        self.nBlocks = nBlocks
 
 
         # Create a list of all seats available in the flight
@@ -141,7 +141,7 @@ class Airplane():
 
     def backToFrontBarding(self):
         tempWaitingList = list(self.passengers)
-        blocks = self.blockSize  # A: number of blocks/zones to divide the passengers
+        blocks = self.nBlocks  # A: number of blocks/zones to divide the passengers
         blockSize = self.nPassengers / blocks
         self.waitingList = []
         for iBlocks in range(blocks - 1):
@@ -169,7 +169,7 @@ class Airplane():
     def flyingCarpetBoarding(self):
         tempWaitingList = list(self.passengers)
         randomOrder = np.random.permutation(self.nPassengers)
-        blocks = self.blockSize  # A: number of blocks/zones to divide the passengers
+        blocks = self.nBlocks  # A: number of blocks/zones to divide the passengers
         blockSize = self.nPassengers / blocks
         flyingCarpetOrder = []
 
@@ -185,5 +185,5 @@ class Airplane():
         self.waitingList = [tempWaitingList[iOrder] for iOrder in flyingCarpetOrder]
         self.waitingList.reverse()
 
-#airplane = Airplane(10,3,'flyingCarpet')
-#airplane.board()
+airplane = Airplane(10,3,'flyingCarpet')
+airplane.board()
