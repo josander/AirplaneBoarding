@@ -118,12 +118,12 @@ class Airplane():
             if actingAgent.seat['side'] == 'L':
                 for iSeat, seat in enumerate(self.leftHandSeats[actingAgent.seat['row']]):
                     if (iSeat < actingAgent.seat['number']) and (not (seat == '')):
-                        actingAgent.t = random.gauss(interferenceMu, interferenceSigma)
+                        actingAgent.t += random.gauss(interferenceMu, interferenceSigma)
 
             else:
                 for iSeat, seat in enumerate(self.rightHandSeats[actingAgent.seat['row']]):
                     if (iSeat < actingAgent.seat['number']) and (not (seat == '')):
-                        actingAgent.t = random.gauss(interferenceMu, interferenceSigma)
+                        actingAgent.t += random.gauss(interferenceMu, interferenceSigma)
         # Passenger sits down
         elif actingAgent.status == 'interfering':
             if actingAgent.seat['side'] == 'L':
