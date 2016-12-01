@@ -2,16 +2,16 @@ import airplane
 import numpy as np
 
 
-nIterations = 10
+nIterations = 20
 
 
 # Dimensions of airplane
 nSeatsPerSide = [2, 3]
-rowList = range(40)
-nRows = rowList[20::10]
+rowList = range(41) # 41 to get 40 rows as well
+nRows = rowList[10::2]
 
 # Nbr of blocks to board
-nBlocks = 2
+nBlocks = 6
 
 
 timeForRandom = [nIterations]
@@ -20,7 +20,7 @@ timeForOutsideIn = [nIterations]
 timeForFlyingCarpet = [nIterations]
 
 # File to print data
-filename = 'boardingData.txt'
+filename = 'boardingData6Blocks.txt'
 f = open(filename,'w')
 
 for iSeatsPerSide in range(len(nSeatsPerSide)):

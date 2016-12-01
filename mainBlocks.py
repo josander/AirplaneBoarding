@@ -2,7 +2,7 @@ import airplane
 import numpy as np
 
 
-nIterations = 10
+nIterations = 20
 
 
 # Dimensions of airplane
