@@ -23,7 +23,9 @@ class Airplane():
         self.tBoarding = 0
         self.status = 'empty'
         self.nBlocks = nBlocks
-
+        self.passengersWaitingTime = 0
+        self.satisfactionFactor = 1
+        self.methodSatisfactionPenalty = 1
 
         # Create a list of all seats available in the flight
         #leftSeatList = [{'side':'L', 'row':iRow, 'number':iNumber} for iRow, iNumber in np.ndindex((nRows,nSeatsPerSide))]
@@ -44,6 +46,8 @@ class Airplane():
         elif self.boardMethod == 'backToFront': # A: the common boarding by zones, from back to front
             self.backToFrontBarding()
         elif self.boardMethod == 'outsideIn': # A: 3 groups; windows first, then middle, then aisle, each group randomly
+            self.methodSatisfactionPenalty = 0.9 # modify multiplier to account for a percentage of people in groups
+                                            # not able to board together
             self.outsideInBoarding()
         elif self.boardMethod == 'flyingCarpet':
             self.flyingCarpetBoarding()
@@ -55,19 +59,13 @@ class Airplane():
         self.rightHandSeats = [['' for iSeats in range(nSeatsPerSide)] for iRows in range(nRows)]
         self.nSeatedPassengers = 0
 
-    # To be removed. Functionality implemented in function board()
-    def moveForward(self, aislePosition):
-        # Moves the passenger in aislePosition one step forward if next position is empty
-        if self.aisle[aislePosition + 1] == '':
-            self.aisle[aislePosition + 1] = self.aisle[aislePosition]
-            self.aisle[aislePosition] = ''
-
     def board(self):
         # Start boarding
         self.status = 'boarding'
         while self.nSeatedPassengers < self.nPassengers:
             self.proceedBoarding()
         self.status = 'boarded'
+        self.customerSatisfaction = self.satisfactionFactor / self.passengersWaitingTime * self.methodSatisfactionPenalty
         #print self.tBoarding
 
 
@@ -78,6 +76,7 @@ class Airplane():
         packSigma = 2 # A: source: flight attendant friend :P
         interferenceMu = 6 # Extra time to get seated if there's a passenger in the way
         interferenceSigma = 2
+        satisfactionFactor = 1
         # Move first person in waiting list into empty spot in aisle if not occupied
         if self.aisle[0] == '' and (not self.waitingList == []):
             self.aisle[0] = self.waitingList.pop(0)
@@ -90,6 +89,7 @@ class Airplane():
             if (not aisleSpot == '') and aisleSpot.seat['row'] == iAisleSpot and aisleSpot.status == 'walking':
                 aisleSpot.status = 'packing'
                 aisleSpot.t = random.gauss(packMu, packSigma)
+                aisleSpot.packingTime = aisleSpot.t
 
             # Check if they account for next event to occur, if so set the time to elapse (tNextEvent) to their time t
             if ((not aisleSpot == '') and aisleSpot.t < tNextEvent
@@ -124,6 +124,7 @@ class Airplane():
                 for iSeat, seat in enumerate(self.rightHandSeats[actingAgent.seat['row']]):
                     if (iSeat < actingAgent.seat['number']) and (not (seat == '')):
                         actingAgent.t += random.gauss(interferenceMu, interferenceSigma)
+
         # Passenger sits down
         elif actingAgent.status == 'interfering':
             if actingAgent.seat['side'] == 'L':
@@ -131,6 +132,8 @@ class Airplane():
             else:
                 self.rightHandSeats[actingAgent.seat['row']][actingAgent.seat['number']] = actingAgent
             actingAgent.status = 'seated'
+            actingAgent.totalWaitingTime = self.tBoarding - actingAgent.seat["row"] / actingAgent.speed - actingAgent.packingTime # A: accounts for waiting and interference times
+            self.passengersWaitingTime += actingAgent.totalWaitingTime
             self.aisle[iNextEvent] = ''
             self.nSeatedPassengers += 1
 
@@ -185,5 +188,6 @@ class Airplane():
         self.waitingList = [tempWaitingList[iOrder] for iOrder in flyingCarpetOrder]
         self.waitingList.reverse()
 
-airplane = Airplane(10,3,'flyingCarpet')
+airplane = Airplane(10,3,'outsideIn')
 airplane.board()
+print airplane.tBoarding, airplane.customerSatisfaction
