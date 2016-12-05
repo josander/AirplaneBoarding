@@ -9,12 +9,13 @@ nIterations = 20
 nSeatsPerSide = [3]
 nRows = [30]
 listBlocks = [2, 3, 4, 5, 6, 7, 8]
+listBlocks = [2,3]
 
 
-timeForRandom = [nIterations]
-timeForBackToFront = [nIterations]
-timeForOutsideIn = [nIterations]
-timeForFlyingCarpet = [nIterations]
+timeForRandom = []
+timeForBackToFront = []
+timeForOutsideIn = []
+timeForFlyingCarpet = []
 
 # File to print data
 filename = 'boardingDataBlockSizeNEW.txt'
@@ -57,6 +58,8 @@ for iBlocks in range(len(listBlocks)):
             print('Outside in \t\t\t %.2f \t %.2f' % (np.mean(timeForOutsideIn),np.std(timeForOutsideIn)) )
             print('Flying carpet \t\t %.2f \t %.2f' % (np.mean(timeForFlyingCarpet),np.std(timeForFlyingCarpet)) )
             print ' '
+            print len(timeForFlyingCarpet)
+            print ' '
 
             # Print to file
             f.write('%.0f \t %.0f \t %.0f \n' % (nRows[iRows], nSeatsPerSide[iSeatsPerSide], listBlocks[iBlocks]) )
@@ -64,6 +67,8 @@ for iBlocks in range(len(listBlocks)):
             f.write('%.2f \t %.2f \n' % (np.mean(timeForBackToFront),np.std(timeForBackToFront)) )
             f.write('%.2f \t %.2f \n' % (np.mean(timeForOutsideIn),np.std(timeForOutsideIn)) )
             f.write('%.2f \t %.2f \n' % (np.mean(timeForFlyingCarpet),np.std(timeForFlyingCarpet)))
+
+print len(timeForFlyingCarpet)
 
 
 f.close()

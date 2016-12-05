@@ -7,11 +7,11 @@ nIterations = 20
 
 # Dimensions of airplane
 nSeatsPerSide = [3]
-rowList = range(30) # 41 to get 40 rows as well
-nRows = rowList[27::1]
+rowList = range(10) # 41 to get 40 rows as well
+nRows = rowList[7::1]
 
 # Nbr of blocks to board
-nBlocks = 3
+nBlocks = 5
 
 
 timeForRandom = [nIterations]
