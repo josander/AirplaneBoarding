@@ -188,6 +188,10 @@ class Airplane():
         self.waitingList = [tempWaitingList[iOrder] for iOrder in flyingCarpetOrder]
         self.waitingList.reverse()
 
-#airplane = Airplane(10,3,'flyingCarpet')
-#airplane.board()
-#print airplane.tBoarding, airplane.customerSatisfaction
+    def reportWaitingTimes(self):
+        tempPassengerList = self.passengers
+        return [tmp.totalWaitingTime for tmp in tempPassengerList]
+
+# airplane = Airplane(10,3,'outsideIn')
+# airplane.board()
+# print airplane.tBoarding, airplane.customerSatisfaction

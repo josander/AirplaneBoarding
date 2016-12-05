@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="17a08246-5f0f-46f3-8976-1e3243ff0d8c" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AnalyzeBoardingData.m" afterPath="$PROJECT_DIR$/AnalyzeBoardingData.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/airplane.py" afterPath="$PROJECT_DIR$/airplane.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/animation.py" afterPath="$PROJECT_DIR$/animation.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.py" afterPath="$PROJECT_DIR$/main.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mainBlocks.py" afterPath="$PROJECT_DIR$/mainBlocks.py" />
     </list>
     <ignored path="AirplaneBoarding.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -34,11 +29,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="airplane.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="airplane.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/airplane.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1114">
-              <caret line="192" column="56" selection-start-line="192" selection-start-column="56" selection-end-line="192" selection-end-column="56" />
+            <state relative-caret-position="319">
+              <caret line="195" column="2" selection-start-line="195" selection-start-column="2" selection-end-line="195" selection-end-column="2" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -56,7 +51,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="960">
@@ -96,9 +91,9 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/mainBlocks.py" />
-        <option value="$PROJECT_DIR$/airplane.py" />
         <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/animation.py" />
+        <option value="$PROJECT_DIR$/airplane.py" />
       </list>
     </option>
   </component>
@@ -693,16 +688,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/main" />
-    <entry file="file://$PROJECT_DIR$/airplane.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1114">
-          <caret line="192" column="56" selection-start-line="192" selection-start-column="56" selection-end-line="192" selection-end-column="56" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/mainBlocks.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
@@ -727,6 +712,16 @@
           <caret line="64" column="108" selection-start-line="64" selection-start-column="8" selection-end-line="64" selection-end-column="108" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/airplane.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="319">
+          <caret line="195" column="2" selection-start-line="195" selection-start-column="2" selection-end-line="195" selection-end-column="2" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
