@@ -8,7 +8,7 @@ planeDim = data(1:5:end,:);
 
 nSeats = unique(planeDim(1:end,2));
 nRows = planeDim(1:end/length(nSeats),1);
-nBlocks = data(1,3);
+nBlocks = unique(data(:,3));
 
 randomBoarding = data(2:5:end,:)/60;
 backToFrontBoarding = data(3:5:end,:)/60;
@@ -29,7 +29,7 @@ for iDifferentSeats = 1:length(nSeats)
   legend('Random','Back to front','Outside in','Flying carpet');
   ylabel('Time [min]','Interpreter','LaTex')
   xlabel('Rows','Interpreter','LaTex')
-  text = strcat(num2str(nSeats(iDifferentSeats)),' seats on one side,~',num2str(nBlocks),' blocks');
+  text = strcat(num2str(nSeats(iDifferentSeats)),' seats on one side,~',num2str(nBlocks(iDifferentSeats+1)),' blocks');
   title(text,'Interpreter','LaTex')
   
 end
@@ -38,7 +38,7 @@ end
 
 clc
 
-data = dlmread('boardingDataBlockSize.txt');
+data = dlmread('boardingDataBlockSizeNEW.txt');
 
 nBlocks = data(1:5:end,3);
 nSeats = data(1,2);

@@ -6,15 +6,11 @@ nIterations = 20
 
 
 # Dimensions of airplane
-nSeatsPerSide = [2, 3]
-nRows = [10, 15, 20, 25, 30, 35, 40]
-listBlocks = [2, 4, 6, 8]
+nSeatsPerSide = [3]
+nRows = [30]
+listBlocks = [2, 4, 6, 8, 10, 12]
 
 
-timeForRandom = [nIterations]
-timeForBackToFront = [nIterations]
-timeForOutsideIn = [nIterations]
-timeForFlyingCarpet = [nIterations]
 
 # File to print data
 filename = 'boardingDataBlockSizeNEW.txt'
@@ -23,6 +19,11 @@ f = open(filename,'w')
 for iBlocks in range(len(listBlocks)):
     for iSeatsPerSide in range(len(nSeatsPerSide)):
         for iRows in range(len(nRows)):
+
+            timeForRandom = []
+            timeForBackToFront = []
+            timeForOutsideIn = []
+            timeForFlyingCarpet = []
 
             # Random boarding
             for iIteration in range(nIterations):
@@ -57,6 +58,7 @@ for iBlocks in range(len(listBlocks)):
             print('Outside in \t\t\t %.2f \t %.2f' % (np.mean(timeForOutsideIn),np.std(timeForOutsideIn)) )
             print('Flying carpet \t\t %.2f \t %.2f' % (np.mean(timeForFlyingCarpet),np.std(timeForFlyingCarpet)) )
             print ' '
+
 
             # Print to file
             f.write('%.0f \t %.0f \t %.0f \n' % (nRows[iRows], nSeatsPerSide[iSeatsPerSide], listBlocks[iBlocks]) )
