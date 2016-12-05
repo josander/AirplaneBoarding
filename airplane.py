@@ -74,9 +74,9 @@ class Airplane():
     def proceedBoarding(self):
         tNextEvent = 100000     # Large number, used to calculate next event
         iNextEvent = 0
-        packMu = 6 # A: mean time and stdev [sec] to pack carry-on luggage
+        packMu = 7 # A: mean time and stdev [sec] to pack carry-on luggage
         packSigma = 2 # A: source: flight attendant friend :P
-        interferenceMu = 6 # Extra time to get seated if there's a passenger in the way
+        interferenceMu = 4 # Extra time to get seated if there's a passenger in the way
         interferenceSigma = 2
         # Move first person in waiting list into empty spot in aisle if not occupied
         if self.aisle[0] == '' and (not self.waitingList == []):

@@ -6,9 +6,9 @@ nIterations = 20
 
 
 # Dimensions of airplane
-nSeatsPerSide = [2]
+nSeatsPerSide = [3]
 nRows = [30]
-listBlocks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+listBlocks = [2, 3, 4, 5, 6, 7, 8]
 
 
 timeForRandom = [nIterations]
@@ -17,7 +17,7 @@ timeForOutsideIn = [nIterations]
 timeForFlyingCarpet = [nIterations]
 
 # File to print data
-filename = 'boardingDataBlockSize.txt'
+filename = 'boardingDataBlockSizeNEW.txt'
 f = open(filename,'w')
 
 for iBlocks in range(len(listBlocks)):
