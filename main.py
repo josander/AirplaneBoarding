@@ -13,11 +13,6 @@ nRows = rowList[10::1]
 # Nbr of blocks to board
 nBlocks = 3 # Varying blocks below
 
-waitingRandom = []
-waitingBackToFront = []
-waitingOutsideIn = []
-waitingFlyingCarpet = []
-
 # File to print data
 filename = 'boardingDataVaryingBlocks.txt'
 f = open(filename,'w')
@@ -34,6 +29,11 @@ for iSeatsPerSide in range(len(nSeatsPerSide)):
         timeForBackToFront = []
         timeForOutsideIn = []
         timeForFlyingCarpet = []
+
+        waitingRandom = []
+        waitingBackToFront = []
+        waitingOutsideIn = []
+        waitingFlyingCarpet = []
 
         # Random boarding
         for iIteration in range(nIterations):
