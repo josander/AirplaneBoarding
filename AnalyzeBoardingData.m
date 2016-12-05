@@ -2,7 +2,7 @@
 
 clc
 
-data = dlmread('boardingData6Blocks.txt');
+data = dlmread('boardingDataVaryingBlocks.txt');
 
 planeDim = data(1:5:end,:);
 
@@ -44,11 +44,10 @@ nBlocks = data(1:5:end,3);
 nSeats = data(1,2);
 nRows = data(1,1);
 
-randomBoarding = data(2:5:end,:);
-backToFrontBoarding = data(3:5:end,:);
-outsideInBoarding = data(4:5:end,:);
-flyingCarpetBoarding = data(5:5:end,:);
-
+randomBoarding = data(2:5:end,:)/60;
+backToFrontBoarding = data(3:5:end,:)/60;
+outsideInBoarding = data(4:5:end,:)/60;
+flyingCarpetBoarding = data(5:5:end,:)/60;
 
 
 figure(3)

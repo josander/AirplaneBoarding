@@ -6,9 +6,9 @@ nIterations = 20
 
 
 # Dimensions of airplane
-nSeatsPerSide = [3]
-nRows = [30]
-listBlocks = [2, 3, 4, 5, 6, 7, 8]
+nSeatsPerSide = [2, 3]
+nRows = [10, 15, 20, 25, 30, 35, 40]
+listBlocks = [2, 4, 6, 8]
 
 
 timeForRandom = [nIterations]

@@ -100,14 +100,19 @@ class animatedAirplane(airplane.Airplane):
         a = anim.FuncAnimation(fig, self.updatefig, interval = 25, save_count = 1500, blit = True)
         a.save(filename, writer=writer)
 
-nRows = 10
-nSeatsPerRow = 3
+nRows = 20
+nSeatsPerRow = 2
+nBlocks = 4
 
-airplane1 = animatedAirplane(nRows, nSeatsPerRow, 'flyingCarpet')
+airplane1 = animatedAirplane(nRows, nSeatsPerRow, 'flyingCarpet', nBlocks)
 airplane1.animate('flyingCarpet.mp4')
-airplane2 = animatedAirplane(nRows, nSeatsPerRow, 'backToFront')
+print('Flying carpet \t %.2f s' % (airplane1.tBoarding) )
+airplane2 = animatedAirplane(nRows, nSeatsPerRow, 'backToFront', nBlocks)
 airplane2.animate('backToFront.mp4')
-airplane3 = animatedAirplane(nRows, nSeatsPerRow, 'random')
+print('Back to front \t %.2f s' % (airplane2.tBoarding) )
+airplane3 = animatedAirplane(nRows, nSeatsPerRow, 'random', nBlocks)
 airplane3.animate('random.mp4')
-airplane4 = animatedAirplane(nRows, nSeatsPerRow, 'outsideIn')
+print('Random \t %.2f s' % (airplane3.tBoarding) )
+airplane4 = animatedAirplane(nRows, nSeatsPerRow, 'outsideIn', nBlocks)
 airplane4.animate('outsideIn.mp4')
+print('Outside in \t %.2f s' % (airplane4.tBoarding) )

@@ -6,12 +6,12 @@ nIterations = 20
 
 
 # Dimensions of airplane
-nSeatsPerSide = [3]
-rowList = range(30) # 41 to get 40 rows as well
-nRows = rowList[27::1]
+nSeatsPerSide = [2, 3]
+rowList = range(41) # 41 to get 40 rows as well
+nRows = rowList[10::2]
 
 # Nbr of blocks to board
-nBlocks = 3
+nBlocks = 3 # Varying blocks below
 
 
 timeForRandom = [nIterations]
@@ -19,12 +19,19 @@ timeForBackToFront = [nIterations]
 timeForOutsideIn = [nIterations]
 timeForFlyingCarpet = [nIterations]
 
+waitingRandom = [nIterations]
+waitingBackToFront = [nIterations]
+waitingOutsideIn = [nIterations]
+waitingFlyingCarpet = [nIterations]
+
 # File to print data
-filename = 'boardingData3Blocks.txt'
+filename = 'boardingDataVaryingBlocks.txt'
 f = open(filename,'w')
 
 for iSeatsPerSide in range(len(nSeatsPerSide)):
     for iRows in range(len(nRows)):
+
+        nBlocks = nSeatsPerSide[iSeatsPerSide] * 2
 
         # Random boarding
         for iIteration in range(nIterations):
@@ -69,8 +76,5 @@ for iSeatsPerSide in range(len(nSeatsPerSide)):
 
 
 f.close()
-
-
-
 
 
