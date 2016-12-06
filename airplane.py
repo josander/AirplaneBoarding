@@ -90,7 +90,7 @@ class Airplane():
             self.aisle[0].status = 'walking'
             self.aisle[0].t = random.random()
 
-        for iAisleSpot, aisleSpot in enumerate(self.aisle):
+        for iAisleSpot, aisleSpot in reversed(list(enumerate(self.aisle))):
 
             # Check if by their seat row, if so take action
             if (not aisleSpot == '') and aisleSpot.seat['row'] == iAisleSpot and aisleSpot.status == 'walking':
@@ -99,17 +99,30 @@ class Airplane():
                     aisleSpot.t = random.gauss(packMu, packSigma)
                     aisleSpot.packingTime = aisleSpot.t
                 else:
-                    aisleSpot.status = 'interfering'
                     aisleSpot.t = 0
+                    aisleSpot.packingTime = 0
                     if aisleSpot.seat['side'] == 'L':
                         for iSeat, seat in enumerate(self.leftHandSeats[aisleSpot.seat['row']]):
                             if (iSeat < aisleSpot.seat['number']) and (not (seat == '')):
                                 aisleSpot.t += random.gauss(interferenceMu, interferenceSigma)
+                                aisleSpot.status = 'interfering'
 
                     else:
                         for iSeat, seat in enumerate(self.rightHandSeats[aisleSpot.seat['row']]):
                             if (iSeat < aisleSpot.seat['number']) and (not (seat == '')):
                                 aisleSpot.t += random.gauss(interferenceMu, interferenceSigma)
+                                aisleSpot.status = 'interfering'
+                    if not aisleSpot.status == 'interfering':
+                        if aisleSpot.seat['side'] == 'L':
+                            self.leftHandSeats[aisleSpot.seat['row']][aisleSpot.seat['number']] = aisleSpot
+                        else:
+                            self.rightHandSeats[aisleSpot.seat['row']][aisleSpot.seat['number']] = aisleSpot
+                        aisleSpot.status = 'seated'
+                        aisleSpot.totalWaitingTime = self.tBoarding - aisleSpot.seat["row"] / aisleSpot.speed - aisleSpot.packingTime  # A: accounts for waiting and interference times
+                        self.passengersWaitingTime += aisleSpot.totalWaitingTime
+                        self.aisle[iAisleSpot] = ''
+                        aisleSpot = ''
+                        self.nSeatedPassengers += 1
 
             # Check if they account for next event to occur, if so set the time to elapse (tNextEvent) to their time t
             if ((not aisleSpot == '') and aisleSpot.t < tNextEvent
@@ -118,14 +131,15 @@ class Airplane():
                     aisleSpot.t = 0
                 tNextEvent = aisleSpot.t
                 iNextEvent = iAisleSpot
-
+        actingAgent = self.aisle[iNextEvent]  # Passenger accounting for next event
+        if actingAgent == '':
+            return 0
         # Elapse time until next event
         self.tBoarding += tNextEvent
         for aisleSpot in self.aisle:
             if not aisleSpot == '':
                 aisleSpot.t -= tNextEvent
 
-        actingAgent = self.aisle[iNextEvent]    # Passenger accounting for next event
 
         # Move passenger to next spot in aisle
         if actingAgent.status == 'walking':
@@ -212,6 +226,6 @@ class Airplane():
         tempPassengerList = self.passengers
         return [tmp.totalWaitingTime for tmp in tempPassengerList]
 
-# airplane = Airplane(10,3,'outsideIn')
+# airplane = Airplane(10,3,'outsideIn', 4, 0.5, 0.5)
 # airplane.board()
 # print airplane.tBoarding, airplane.customerSatisfaction
