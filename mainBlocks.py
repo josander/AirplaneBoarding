@@ -58,6 +58,8 @@ for iBlocks in range(len(listBlocks)):
             print('Outside in \t\t\t %.2f \t %.2f' % (np.mean(timeForOutsideIn),np.std(timeForOutsideIn)) )
             print('Flying carpet \t\t %.2f \t %.2f' % (np.mean(timeForFlyingCarpet),np.std(timeForFlyingCarpet)) )
             print ' '
+            print len(timeForFlyingCarpet)
+            print ' '
 
 
             # Print to file
@@ -66,6 +68,8 @@ for iBlocks in range(len(listBlocks)):
             f.write('%.2f \t %.2f \n' % (np.mean(timeForBackToFront),np.std(timeForBackToFront)) )
             f.write('%.2f \t %.2f \n' % (np.mean(timeForOutsideIn),np.std(timeForOutsideIn)) )
             f.write('%.2f \t %.2f \n' % (np.mean(timeForFlyingCarpet),np.std(timeForFlyingCarpet)))
+
+print len(timeForFlyingCarpet)
 
 
 f.close()

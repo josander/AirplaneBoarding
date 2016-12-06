@@ -10,6 +10,7 @@ nSeatsPerSide = [2, 3]
 rowList = range(41) # 41 to get 40 rows as well
 nRows = rowList[10::2]
 
+
 # File to print data
 filename = 'boardingDataVaryingBlocks.txt'
 f = open(filename,'w')

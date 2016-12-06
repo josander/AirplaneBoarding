@@ -2,7 +2,7 @@
 
 clc
 
-data = dlmread('boardingDataVaryingBlocks.txt');
+data = dlmread('boardingData3Blocks.txt');
 
 planeDim = data(1:5:end,:);
 
@@ -46,7 +46,7 @@ end
 
 clc
 
-data = dlmread('boardingDataBlockSizeNEW.txt');
+data = dlmread('boardingData3Blocks.txt');
 
 nBlocks = data(1:5:end,3);
 nSeats = data(1,2);
@@ -70,3 +70,29 @@ ylabel('Time','Interpreter','LaTex')
 xlabel('Blocks','Interpreter','LaTex')
 text = strcat(num2str(nSeats),' seats on one side,~',num2str(nRows),' rows');
 title(text,'Interpreter','LaTex')
+
+
+%% waiting times
+
+clear all
+close all
+clc
+
+data = dlmread('waitingTimes.txt');
+
+nIterationsPerType = 100;
+
+nBoardings = max(data(:,1));
+nTypes = nBoardings / nIterationsPerType;
+
+for iType = 1:nTypes
+    firstBoarding = (iType - 1)*nIterationsPerType + 1;
+    lastBoarding = iType*nIterationsPerType;
+    
+    firstLine = find(data(:,1) == firstBoarding , 1);
+    lastLine = find(data(:,1) == lastBoarding , 1, 'last');
+    
+    figure(iType)
+    hist(data(firstLine:lastLine,2))
+    axis([0 max(max(data)) 0 30*nIterationsPerType])
+end
