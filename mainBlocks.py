@@ -2,14 +2,14 @@ import airplane
 import numpy as np
 
 
-nIterations = 20
+nIterations = 100
+
 
 
 # Dimensions of airplane
 nSeatsPerSide = [3]
 nRows = [30]
 listBlocks = [2, 4, 6, 8, 10, 12]
-
 
 
 # File to print data

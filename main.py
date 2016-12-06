@@ -2,16 +2,13 @@ import airplane
 import numpy as np
 
 
-nIterations = 20
+nIterations = 100
 
 
 # Dimensions of airplane
-nSeatsPerSide = [2]
-rowList = range(11) # 41 to get 40 rows as well
-nRows = rowList[10::1]
-
-# Nbr of blocks to board
-nBlocks = 3 # Varying blocks below
+nSeatsPerSide = [2, 3]
+rowList = range(41) # 41 to get 40 rows as well
+nRows = rowList[10::2]
 
 # File to print data
 filename = 'boardingDataVaryingBlocks.txt'
@@ -30,17 +27,12 @@ for iSeatsPerSide in range(len(nSeatsPerSide)):
         timeForOutsideIn = []
         timeForFlyingCarpet = []
 
-        waitingRandom = []
-        waitingBackToFront = []
-        waitingOutsideIn = []
-        waitingFlyingCarpet = []
 
         # Random boarding
         for iIteration in range(nIterations):
             myAirplane = airplane.Airplane(nRows[iRows], nSeatsPerSide[iSeatsPerSide], 'random', nBlocks)
             myAirplane.board()
             timeForRandom.append(myAirplane.tBoarding)
-            waitingRandom.append(myAirplane.reportWaitingTimes)
 
         # Back to front boarding
         for iIteration in range(nIterations):
