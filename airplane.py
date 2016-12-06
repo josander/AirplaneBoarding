@@ -3,10 +3,11 @@ import random
 import itertools
 
 # TODO: Could be interesting to investigate how much waiting time (inside the airplane) there is for each individual
+# TODO: Better to see the distribution of waiting time among passangers. Maybe look at the ratio waiting time vs the total time from entering the plane to be seated
 
 class Passenger():
     nPassenger = 0  # Class variable keeping track of the number of passengers in total
-    speedMu = 1 # A: average passenger speed when walking unblocked in rows/second
+    speedMu = 0.8 # A: average passenger speed when walking unblocked in rows/second
     speedSigma = 0.2 # A: stddev
     def __init__(self, seat): # A: removed speed as an argument, as it's drawn from distribution below
         self.seat = seat    # Of form {'side':'L', 'row':0, 'number': 0}. row 0 is by entrance, number 0 is by aisle
@@ -25,7 +26,7 @@ class Airplane():
         self.status = 'empty'
         self.nBlocks = nBlocks
         self.passengersWaitingTime = 0
-        self.satisfactionFactor = 1
+        self.satisfactionFactor = 10000
         self.methodSatisfactionPenalty = 1
 
         # Create a list of all seats available in the flight
@@ -73,15 +74,14 @@ class Airplane():
             self.proceedBoarding()
         self.status = 'boarded'
         self.customerSatisfaction = self.satisfactionFactor / self.passengersWaitingTime * self.methodSatisfactionPenalty
-        #print self.tBoarding
 
 
     def proceedBoarding(self):
         tNextEvent = 100000     # Large number, used to calculate next event
         iNextEvent = 0
-        packMu = 6 # A: mean time and stdev [sec] to pack carry-on luggage
+        packMu = 7 # A: mean time and stdev [sec] to pack carry-on luggage
         packSigma = 2 # A: source: flight attendant friend :P
-        interferenceMu = 6 # Extra time to get seated if there's a passenger in the way
+        interferenceMu = 4 # Extra time to get seated if there's a passenger in the way
         interferenceSigma = 2
         satisfactionFactor = 1
         # Move first person in waiting list into empty spot in aisle if not occupied
@@ -208,6 +208,10 @@ class Airplane():
         self.waitingList = [tempWaitingList[iOrder] for iOrder in flyingCarpetOrder]
         self.waitingList.reverse()
 
-airplane = Airplane(10,3,'outsideIn')
-airplane.board()
-print airplane.tBoarding, airplane.customerSatisfaction
+    def reportWaitingTimes(self):
+        tempPassengerList = self.passengers
+        return [tmp.totalWaitingTime for tmp in tempPassengerList]
+
+# airplane = Airplane(10,3,'outsideIn')
+# airplane.board()
+# print airplane.tBoarding, airplane.customerSatisfaction

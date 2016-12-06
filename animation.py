@@ -95,19 +95,24 @@ class animatedAirplane(airplane.Airplane):
         ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), numpoints = 1)
 
         Writer = anim.writers['ffmpeg']
-        writer = Writer(fps=25, metadata=dict(artist='Me'), bitrate=1800)
+        writer = Writer(fps=40, metadata=dict(artist='Me'), bitrate=1800)
 
-        a = anim.FuncAnimation(fig, self.updatefig, interval = 25, save_count = 1500, blit = True)
+        a = anim.FuncAnimation(fig, self.updatefig, interval = 25, save_count = 5000, blit = True)
         a.save(filename, writer=writer)
 
-nRows = 10
+nRows = 40
 nSeatsPerRow = 3
+nBlocks = 4
 
-airplane1 = animatedAirplane(nRows, nSeatsPerRow, 'flyingCarpet')
-airplane1.animate('flyingCarpet.mp4')
-airplane2 = animatedAirplane(nRows, nSeatsPerRow, 'backToFront')
-airplane2.animate('backToFront.mp4')
-airplane3 = animatedAirplane(nRows, nSeatsPerRow, 'random')
-airplane3.animate('random.mp4')
-airplane4 = animatedAirplane(nRows, nSeatsPerRow, 'outsideIn')
-airplane4.animate('outsideIn.mp4')
+#airplane1 = animatedAirplane(nRows, nSeatsPerRow, 'flyingCarpet', nBlocks)
+#airplane1.animate('flyingCarpetLOW.mp4')
+#print('Flying carpet \t %.2f s' % (airplane1.tBoarding) )
+#airplane2 = animatedAirplane(nRows, nSeatsPerRow, 'backToFront', nBlocks)
+#airplane2.animate('backToFront.mp4')
+#print('Back to front \t %.2f s' % (airplane2.tBoarding) )
+#irplane3 = animatedAirplane(nRows, nSeatsPerRow, 'random', nBlocks)
+#airplane3.animate('random.mp4')
+#print('Random \t %.2f s' % (airplane3.tBoarding) )
+airplane4 = animatedAirplane(nRows, nSeatsPerRow, 'outsideIn', nBlocks)
+airplane4.animate('outsideInHIGH.mp4')
+print('Outside in \t %.2f s' % (airplane4.tBoarding) )

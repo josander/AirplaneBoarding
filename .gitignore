@@ -48,3 +48,5 @@ Thumbs.db
 *.mp4
 *.pyc
 *.idea*
+
+*.swp
