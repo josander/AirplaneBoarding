@@ -2,11 +2,11 @@
 
 clc
 
-data = dlmread('boardingData3Blocks.txt');
+data = dlmread('boardingData50filled.txt');
 
 planeDim = data(1:5:end,:);
 
-showEvery = 2;
+showEvery = 4;
 nSeats = unique(planeDim(1:end,2));
 nRows = planeDim(1:end/length(nSeats),1);
 nBlocks = unique(data(:,3));
