@@ -103,16 +103,18 @@ class animatedAirplane(airplane.Airplane):
 nRows = 40
 nSeatsPerRow = 3
 nBlocks = 4
+fractionFilled = 0.5
+fractionLuggage = 1.0
 
-#airplane1 = animatedAirplane(nRows, nSeatsPerRow, 'flyingCarpet', nBlocks)
-#airplane1.animate('flyingCarpetLOW.mp4')
-#print('Flying carpet \t %.2f s' % (airplane1.tBoarding) )
-#airplane2 = animatedAirplane(nRows, nSeatsPerRow, 'backToFront', nBlocks)
+airplane1 = animatedAirplane(nRows, nSeatsPerRow, 'flyingCarpet', nBlocks, fracFilled, fracLuggage)
+airplane1.animate('flyingCarpetLOW.mp4')
+print('Flying carpet \t %.2f s' % (airplane1.tBoarding) )
+#airplane2 = animatedAirplane(nRows, nSeatsPerRow, 'backToFront', nBlocks, fracFilled, fracLuggage)
 #airplane2.animate('backToFront.mp4')
 #print('Back to front \t %.2f s' % (airplane2.tBoarding) )
-#irplane3 = animatedAirplane(nRows, nSeatsPerRow, 'random', nBlocks)
+#irplane3 = animatedAirplane(nRows, nSeatsPerRow, 'random', nBlocks, fracFilled, fracLuggage)
 #airplane3.animate('random.mp4')
 #print('Random \t %.2f s' % (airplane3.tBoarding) )
-airplane4 = animatedAirplane(nRows, nSeatsPerRow, 'outsideIn', nBlocks)
-airplane4.animate('outsideInHIGH.mp4')
-print('Outside in \t %.2f s' % (airplane4.tBoarding) )
+#airplane4 = animatedAirplane(nRows, nSeatsPerRow, 'outsideIn', nBlocks, fracFilled, fracLuggage)
+#airplane4.animate('outsideInHIGH.mp4')
+#print('Outside in \t %.2f s' % (airplane4.tBoarding) )

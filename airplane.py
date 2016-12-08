@@ -15,9 +15,10 @@ class Passenger():
         self.i = self.nPassenger    # Assigning unique index for every passenger
         self.nPassenger += 1
         self.status = 'waiting'     # Statuses 'waiting', 'walking', 'packing', 'sitting'
+        self.luggage = True         # Default value that passengers have luggage
 
 class Airplane():
-    def __init__(self, nRows, nSeatsPerSide, boardMethod, nBlocks=4):
+    def __init__(self, nRows, nSeatsPerSide, boardMethod, nBlocks=4, fracFilled = 1.0, fracLuggage=1.0):
         self.nRows = nRows
         self.nSeatsPerRow = nSeatsPerSide
         self.boardMethod = boardMethod
@@ -38,14 +39,20 @@ class Airplane():
         # Creating a Passenger for each seat and assigns the seat for them. Passengers to be kept in this list
         # A: changed because speed was removed as parameter self.passengers = [ Passenger(iSeat, 0.5) for iSeat in seatList ]
         self.passengers = [ Passenger(iSeat) for iSeat in seatList ]
+        random.shuffle(self.passengers)
+        self.passengers = self.passengers[0:int(fracFilled*2*self.nRows*self.nSeatsPerRow)]
         self.nPassengers = len(self.passengers)
+
+        # Sets 'no luggage'
+        for iPassenger in range(int((1.0-fracLuggage)*self.nPassengers)):
+            self.passengers[iPassenger].luggage = False
 
         # A: different ways of ordering passengers
         # Same objects kept in both list (elements fo lists works as pointers)
         if self.boardMethod == 'random': # A: completely random boarding
             self.randomBoarding()
         elif self.boardMethod == 'backToFront': # A: the common boarding by zones, from back to front
-            self.backToFrontBarding()
+            self.backToFrontBoarding()
         elif self.boardMethod == 'outsideIn': # A: 3 groups; windows first, then middle, then aisle, each group randomly
             self.methodSatisfactionPenalty = 0.9 # modify multiplier to account for a percentage of people in groups
                                             # not able to board together
@@ -83,13 +90,39 @@ class Airplane():
             self.aisle[0].status = 'walking'
             self.aisle[0].t = random.random()
 
-        for iAisleSpot, aisleSpot in enumerate(self.aisle):
+        for iAisleSpot, aisleSpot in reversed(list(enumerate(self.aisle))):
 
-            # Check if by their seat row, if so start packing
+            # Check if by their seat row, if so take action
             if (not aisleSpot == '') and aisleSpot.seat['row'] == iAisleSpot and aisleSpot.status == 'walking':
-                aisleSpot.status = 'packing'
-                aisleSpot.t = random.gauss(packMu, packSigma)
-                aisleSpot.packingTime = aisleSpot.t
+                if aisleSpot.luggage:
+                    aisleSpot.status = 'packing'
+                    aisleSpot.t = random.gauss(packMu, packSigma)
+                    aisleSpot.packingTime = aisleSpot.t
+                else:
+                    aisleSpot.t = 0
+                    aisleSpot.packingTime = 0
+                    if aisleSpot.seat['side'] == 'L':
+                        for iSeat, seat in enumerate(self.leftHandSeats[aisleSpot.seat['row']]):
+                            if (iSeat < aisleSpot.seat['number']) and (not (seat == '')):
+                                aisleSpot.t += random.gauss(interferenceMu, interferenceSigma)
+                                aisleSpot.status = 'interfering'
+
+                    else:
+                        for iSeat, seat in enumerate(self.rightHandSeats[aisleSpot.seat['row']]):
+                            if (iSeat < aisleSpot.seat['number']) and (not (seat == '')):
+                                aisleSpot.t += random.gauss(interferenceMu, interferenceSigma)
+                                aisleSpot.status = 'interfering'
+                    if not aisleSpot.status == 'interfering':
+                        if aisleSpot.seat['side'] == 'L':
+                            self.leftHandSeats[aisleSpot.seat['row']][aisleSpot.seat['number']] = aisleSpot
+                        else:
+                            self.rightHandSeats[aisleSpot.seat['row']][aisleSpot.seat['number']] = aisleSpot
+                        aisleSpot.status = 'seated'
+                        aisleSpot.totalWaitingTime = self.tBoarding - aisleSpot.seat["row"] / aisleSpot.speed - aisleSpot.packingTime  # A: accounts for waiting and interference times
+                        self.passengersWaitingTime += aisleSpot.totalWaitingTime
+                        self.aisle[iAisleSpot] = ''
+                        aisleSpot = ''
+                        self.nSeatedPassengers += 1
 
             # Check if they account for next event to occur, if so set the time to elapse (tNextEvent) to their time t
             if ((not aisleSpot == '') and aisleSpot.t < tNextEvent
@@ -98,14 +131,15 @@ class Airplane():
                     aisleSpot.t = 0
                 tNextEvent = aisleSpot.t
                 iNextEvent = iAisleSpot
-
+        actingAgent = self.aisle[iNextEvent]  # Passenger accounting for next event
+        if actingAgent == '':
+            return 0
         # Elapse time until next event
         self.tBoarding += tNextEvent
         for aisleSpot in self.aisle:
             if not aisleSpot == '':
                 aisleSpot.t -= tNextEvent
 
-        actingAgent = self.aisle[iNextEvent]    # Passenger accounting for next event
 
         # Move passenger to next spot in aisle
         if actingAgent.status == 'walking':
@@ -142,7 +176,7 @@ class Airplane():
         random.shuffle(tempWaitingList)
         self.waitingList = tempWaitingList
 
-    def backToFrontBarding(self):
+    def backToFrontBoarding(self):
         tempWaitingList = list(self.passengers)
         blocks = self.nBlocks  # A: number of blocks/zones to divide the passengers
         blockSize = self.nPassengers / blocks
@@ -192,6 +226,6 @@ class Airplane():
         tempPassengerList = self.passengers
         return [tmp.totalWaitingTime for tmp in tempPassengerList]
 
-# airplane = Airplane(10,3,'outsideIn')
+# airplane = Airplane(10,3,'outsideIn', 4, 0.5, 0.5)
 # airplane.board()
 # print airplane.tBoarding, airplane.customerSatisfaction

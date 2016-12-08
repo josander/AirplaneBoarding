@@ -2,10 +2,11 @@
 
 clc
 
-data = dlmread('boardingData3Blocks.txt');
+data = dlmread('boardingData50filled.txt');
 
 planeDim = data(1:5:end,:);
 
+showEvery = 4;
 nSeats = unique(planeDim(1:end,2));
 nRows = planeDim(1:end/length(nSeats),1);
 nBlocks = unique(data(:,3));
@@ -15,17 +16,24 @@ backToFrontBoarding = data(3:5:end,:)/60;
 outsideInBoarding = data(4:5:end,:)/60;
 flyingCarpetBoarding = data(5:5:end,:)/60;
 
+figure(1)
+clf
 figure(2)
 clf
 for iDifferentSeats = 1:length(nSeats)
   
-  subplot(length(nSeats),1,iDifferentSeats)
+  figure(iDifferentSeats)
   elements = (iDifferentSeats-1)*length(randomBoarding)/length(nSeats)+1:iDifferentSeats*length(randomBoarding)/length(nSeats);
-  plot(nRows,randomBoarding(elements,1))
+  %plot(nRows,randomBoarding(elements,1))
+  errorbar(nRows(1:showEvery:end),randomBoarding(elements(1:showEvery:end),1),randomBoarding(elements(1:showEvery:end),2))
   hold on
-  plot(nRows,backToFrontBoarding(elements,1))
-  plot(nRows,outsideInBoarding(elements,1))
-  plot(nRows,flyingCarpetBoarding(elements,1))
+  %plot(nRows,backToFrontBoarding(elements,1))
+  errorbar(nRows(1:showEvery:end),backToFrontBoarding(elements(1:showEvery:end),1),backToFrontBoarding(elements(1:showEvery:end),2))
+  %plot(nRows,outsideInBoarding(elements,1))
+  errorbar(nRows(1:showEvery:end),outsideInBoarding(elements(1:showEvery:end),1),outsideInBoarding(elements(1:showEvery:end),2))
+  
+  %plot(nRows,flyingCarpetBoarding(elements,1))
+  errorbar(nRows(1:showEvery:end),flyingCarpetBoarding(elements(1:showEvery:end),1),flyingCarpetBoarding(elements(1:showEvery:end),2))
   legend('Random','Back to front','Outside in','Flying carpet');
   ylabel('Time [min]','Interpreter','LaTex')
   xlabel('Rows','Interpreter','LaTex')
