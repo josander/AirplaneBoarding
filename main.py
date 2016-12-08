@@ -3,20 +3,20 @@ import numpy as np
 import math
 
 
-nIterations = 10
+nIterations = 500
 
 
 # Dimensions of airplane
-nSeatsPerSide = [2]
-nRows = [10]
+nSeatsPerSide = [2, 3]
+nRows = [30]
 fracFilled = 1.0
-fracLuggage = 1.0
+fracLuggage = 0.5
 nBlocks = 1         # Will be changed later in the code
 threshold = 6000
 
 
 # File to print data
-filename = 'boardingDataNEW.txt'
+filename = 'boardingData50Luggage.txt'
 f = open(filename,'w')
 
 for iSeatsPerSide in range(len(nSeatsPerSide)):
