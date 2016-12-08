@@ -3,28 +3,24 @@ import numpy as np
 import math
 
 
-nIterations = 100
+nIterations = 500
 
 
 # Dimensions of airplane
 nSeatsPerSide = [2, 3]
-rowList = range(41) # 41 to get 40 rows as well
-nRows = rowList[10::2]
-fracFilled = 0.5
+nRows = [30]
+fracFilled = 1.0
 fracLuggage = 1.0
+nBlocks = 1         # Will be changed later in the code
+
 
 
 # File to print data
-filename = 'boardingData50filled.txt'
+filename = 'boardingData.txt'
 f = open(filename,'w')
-
-filename = 'waitingTime.txt'
-waitingFile = open(filename,'w')
 
 for iSeatsPerSide in range(len(nSeatsPerSide)):
     for iRows in range(len(nRows)):
-
-        nBlocks = math.ceil(nSeatsPerSide[iSeatsPerSide] * 2 * fracFilled)
 
         timeForRandom = []
         timeForBackToFront = []
@@ -39,6 +35,7 @@ for iSeatsPerSide in range(len(nSeatsPerSide)):
             timeForRandom.append(myAirplane.tBoarding)
 
         # Back to front boarding
+        nBlocks = 2
         for iIteration in range(nIterations):
             myAirplane = airplane.Airplane(nRows[iRows], nSeatsPerSide[iSeatsPerSide], 'backToFront', nBlocks, fracFilled, fracLuggage)
             myAirplane.board()
@@ -51,6 +48,7 @@ for iSeatsPerSide in range(len(nSeatsPerSide)):
             timeForOutsideIn.append(myAirplane.tBoarding)
 
         # Flying carpet boarding
+        nBlocks = int(math.ceil(nSeatsPerSide[iSeatsPerSide] * 2 * fracFilled))
         for iIteration in range(nIterations):
             myAirplane = airplane.Airplane(nRows[iRows], nSeatsPerSide[iSeatsPerSide], 'flyingCarpet', nBlocks, fracFilled, fracLuggage)
             myAirplane.board()
@@ -75,6 +73,5 @@ for iSeatsPerSide in range(len(nSeatsPerSide)):
 
 
 f.close()
-waitingFile.close()
 
 

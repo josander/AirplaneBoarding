@@ -1,20 +1,14 @@
 import airplane
 import numpy as np
 
-
-
 nIterations = 2000
-
-
-
-
-
 
 # Dimensions of airplane
 nSeatsPerSide = [3]
 nRows = [30]
 listBlocks = [2, 4, 6, 8, 10, 12]
-
+fracFilled = 1.0
+fracLuggage = 0.5
 
 # File to print data
 filename = 'boardingDataBlocks2000its.txt'

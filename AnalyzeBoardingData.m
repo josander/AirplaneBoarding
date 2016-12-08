@@ -1,8 +1,9 @@
 %% Analyze boarding data
 
 clc
+clear all
 
-data = dlmread('boardingData50filled.txt');
+data = dlmread('boardingDataVaryingBlocks.txt');
 
 planeDim = data(1:5:end,:);
 

@@ -95,19 +95,19 @@ class animatedAirplane(airplane.Airplane):
         ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), numpoints = 1)
 
         Writer = anim.writers['ffmpeg']
-        writer = Writer(fps=40, metadata=dict(artist='Me'), bitrate=1800)
+        writer = Writer(fps=60, metadata=dict(artist='Me'), bitrate=1800)
 
         a = anim.FuncAnimation(fig, self.updatefig, interval = 25, save_count = 5000, blit = True)
         a.save(filename, writer=writer)
 
-nRows = 40
-nSeatsPerRow = 3
-nBlocks = 4
-fractionFilled = 0.5
-fractionLuggage = 1.0
+nRows = 20
+nSeatsPerRow = 2
+nBlocks = 6
+fracFilled = 1.0
+fracLuggage = 0.5
 
 airplane1 = animatedAirplane(nRows, nSeatsPerRow, 'flyingCarpet', nBlocks, fracFilled, fracLuggage)
-airplane1.animate('flyingCarpetLOW.mp4')
+airplane1.animate('flyingCarpetNEW.mp4')
 print('Flying carpet \t %.2f s' % (airplane1.tBoarding) )
 #airplane2 = animatedAirplane(nRows, nSeatsPerRow, 'backToFront', nBlocks, fracFilled, fracLuggage)
 #airplane2.animate('backToFront.mp4')
