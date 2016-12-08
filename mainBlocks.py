@@ -2,7 +2,7 @@ import airplane
 import numpy as np
 
 
-nIterations = 20
+nIterations = 2000
 
 
 # Dimensions of airplane
@@ -14,7 +14,7 @@ listBlocks = [2, 4, 6, 8, 10, 12]
 
 
 # File to print data
-filename = 'boardingDataBlockSizeNEW.txt'
+filename = 'boardingDataBlocks2000its.txt'
 f = open(filename,'w')
 
 for iBlocks in range(len(listBlocks)):

@@ -38,7 +38,7 @@ end
 
 clc
 
-data = dlmread('boardingData3Blocks.txt');
+data = dlmread('boardingDataBlocks2000its.txt');
 
 nBlocks = data(1:5:end,3);
 nSeats = data(1,2);
