@@ -9,6 +9,7 @@ nRows = [30]
 listBlocks = [2, 4, 6, 8, 10, 12]
 fracFilled = 1.0
 fracLuggage = 0.5
+threshold = 6000
 
 # File to print data
 filename = 'boardingDataBlocks2000its.txt'
@@ -47,27 +48,39 @@ for iBlocks in range(len(listBlocks)):
                 myAirplane.board()
                 timeForFlyingCarpet.append(myAirplane.tBoarding)
 
+            # Threshold out outlayers
+            timeRandom = []
+            timeBackToFront = []
+            timeOutsideIn = []
+            timeFlyingCarpet = []
+
+            for iIteration in range(nIterations):
+                if timeForRandom[iIteration] < threshold:
+                    timeRandom.append(timeForRandom[iIteration])
+                if timeForBackToFront[iIteration] < threshold:
+                    timeBackToFront.append(timeForBackToFront[iIteration])
+                if timeForOutsideIn[iIteration] < threshold:
+                    timeOutsideIn.append(timeForOutsideIn[iIteration])
+                if timeForFlyingCarpet[iIteration] < threshold:
+                    timeFlyingCarpet.append(timeForFlyingCarpet[iIteration])
 
             print('Nbr of rows: %.0f \t Seats per side: %.0f \t Nbr of blocks: %.0f \t Fraction filled: %.0f \t Fraction luggage: %.0f' % (nRows[iRows], nSeatsPerSide[iSeatsPerSide], listBlocks[iBlocks], fracFilled, fracLuggage) )
             print '___________________________________________________________'
             print('Boarding strategy \t Mean \t\t Std')
-            print('Random boarding \t %.2f \t %.2f' % (np.mean(timeForRandom),np.std(timeForRandom)) )
-            print('Back to front \t\t %.2f \t %.2f' % (np.mean(timeForBackToFront),np.std(timeForBackToFront)) )
-            print('Outside in \t\t\t %.2f \t %.2f' % (np.mean(timeForOutsideIn),np.std(timeForOutsideIn)) )
-            print('Flying carpet \t\t %.2f \t %.2f' % (np.mean(timeForFlyingCarpet),np.std(timeForFlyingCarpet)) )
-            print ' '
-            print len(timeForFlyingCarpet)
+            print('Random boarding \t %.2f \t %.2f' % (np.mean(timeRandom),np.std(timeRandom)) )
+            print('Back to front \t\t %.2f \t %.2f' % (np.mean(timeBackToFront),np.std(timeBackToFront)) )
+            print('Outside in \t\t\t %.2f \t %.2f' % (np.mean(timeOutsideIn),np.std(timeOutsideIn)) )
+            print('Flying carpet \t\t %.2f \t %.2f' % (np.mean(timeFlyingCarpet),np.std(timeFlyingCarpet)) )
             print ' '
 
 
             # Print to file
             f.write('%.0f \t %.0f \t %.0f \t %.0f \t %.0f \n' % (nRows[iRows], nSeatsPerSide[iSeatsPerSide], listBlocks[iBlocks], fracFilled, fracLuggage) )
-            f.write('%.2f \t %.2f \n' % (np.mean(timeForRandom),np.std(timeForRandom)) )
-            f.write('%.2f \t %.2f \n' % (np.mean(timeForBackToFront),np.std(timeForBackToFront)) )
-            f.write('%.2f \t %.2f \n' % (np.mean(timeForOutsideIn),np.std(timeForOutsideIn)) )
-            f.write('%.2f \t %.2f \n' % (np.mean(timeForFlyingCarpet),np.std(timeForFlyingCarpet)))
+            f.write('%.2f \t %.2f \n' % (np.mean(timeRandom),np.std(timeRandom)) )
+            f.write('%.2f \t %.2f \n' % (np.mean(timeBackToFront),np.std(timeBackToFront)) )
+            f.write('%.2f \t %.2f \n' % (np.mean(timeOutsideIn),np.std(timeOutsideIn)) )
+            f.write('%.2f \t %.2f \n' % (np.mean(timeFlyingCarpet),np.std(timeFlyingCarpet)))
 
-print len(timeForFlyingCarpet)
 
 
 f.close()
