@@ -39,8 +39,10 @@ class Airplane():
         # Creating a Passenger for each seat and assigns the seat for them. Passengers to be kept in this list
         # A: changed because speed was removed as parameter self.passengers = [ Passenger(iSeat, 0.5) for iSeat in seatList ]
         self.passengers = [ Passenger(iSeat) for iSeat in seatList ]
-        random.shuffle(self.passengers)
-        self.passengers = self.passengers[0:int(fracFilled*2*self.nRows*self.nSeatsPerRow)]
+        tempPassengers = self.passengers
+        random.shuffle(tempPassengers)
+        self.passengers = tempPassengers[0:int(fracFilled*2*self.nRows*self.nSeatsPerRow)]
+        self.passengers.sort()
         self.nPassengers = len(self.passengers)
 
         # Sets 'no luggage'
@@ -226,6 +228,6 @@ class Airplane():
         tempPassengerList = self.passengers
         return [tmp.totalWaitingTime for tmp in tempPassengerList]
 
-# airplane = Airplane(10,3,'outsideIn', 4, 0.5, 0.5)
-# airplane.board()
-# print airplane.tBoarding, airplane.customerSatisfaction
+#airplane = Airplane(10,3,'flyingCarpet', 4, 0.5, 0.5)
+#airplane.board()
+#print airplane.tBoarding, airplane.customerSatisfaction

@@ -7,7 +7,7 @@ nIterations = 20
 
 
 # Dimensions of airplane
-nSeatsPerSide = [2]
+nSeatsPerSide = [3]
 nRows = [30]
 fracFilled = 1.0
 fracLuggage = 1.0
@@ -16,7 +16,7 @@ threshold = 6000
 
 
 # File to print data
-filename = 'boardingData200.txt'
+filename = 'boardingData.txt'
 f = open(filename,'w')
 
 for iSeatsPerSide in range(len(nSeatsPerSide)):
@@ -30,29 +30,29 @@ for iSeatsPerSide in range(len(nSeatsPerSide)):
 
         # Random boarding
         for iIteration in range(nIterations):
-            myAirplane = airplane.Airplane(nRows[iRows], nSeatsPerSide[iSeatsPerSide], 'random', nBlocks, fracFilled, fracLuggage)
-            myAirplane.board()
-            timeForRandom.append(myAirplane.tBoarding)
+            myAirplane1 = airplane.Airplane(nRows[iRows], nSeatsPerSide[iSeatsPerSide], 'random', nBlocks, fracFilled, fracLuggage)
+            myAirplane1.board()
+            timeForRandom.append(myAirplane1.tBoarding)
 
         # Back to front boarding
         nBlocks = 2
         for iIteration in range(nIterations):
-            myAirplane = airplane.Airplane(nRows[iRows], nSeatsPerSide[iSeatsPerSide], 'backToFront', nBlocks, fracFilled, fracLuggage)
-            myAirplane.board()
-            timeForBackToFront.append(myAirplane.tBoarding)
+            myAirplane2 = airplane.Airplane(nRows[iRows], nSeatsPerSide[iSeatsPerSide], 'backToFront', nBlocks, fracFilled, fracLuggage)
+            myAirplane2.board()
+            timeForBackToFront.append(myAirplane2.tBoarding)
 
         # Outside in boarding
         for iIteration in range(nIterations):
-            myAirplane = airplane.Airplane(nRows[iRows], nSeatsPerSide[iSeatsPerSide], 'outsideIn', nBlocks, fracFilled, fracLuggage)
-            myAirplane.board()
-            timeForOutsideIn.append(myAirplane.tBoarding)
+            myAirplane3 = airplane.Airplane(nRows[iRows], nSeatsPerSide[iSeatsPerSide], 'outsideIn', nBlocks, fracFilled, fracLuggage)
+            myAirplane3.board()
+            timeForOutsideIn.append(myAirplane3.tBoarding)
 
         # Flying carpet boarding
         nBlocks = int(math.ceil(nSeatsPerSide[iSeatsPerSide] * 2 * fracFilled))
         for iIteration in range(nIterations):
-            myAirplane = airplane.Airplane(nRows[iRows], nSeatsPerSide[iSeatsPerSide], 'flyingCarpet', nBlocks, fracFilled, fracLuggage)
-            myAirplane.board()
-            timeForFlyingCarpet.append(myAirplane.tBoarding)
+            myAirplane4 = airplane.Airplane(nRows[iRows], nSeatsPerSide[iSeatsPerSide], 'flyingCarpet', nBlocks, fracFilled, fracLuggage)
+            myAirplane4.board()
+            timeForFlyingCarpet.append(myAirplane4.tBoarding)
 
 
         # Threshold out outlayers

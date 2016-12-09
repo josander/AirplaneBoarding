@@ -100,21 +100,22 @@ class animatedAirplane(airplane.Airplane):
         a = anim.FuncAnimation(fig, self.updatefig, interval = 25, save_count = 5000, blit = True)
         a.save(filename, writer=writer)
 
-nRows = 20
+nRows = 10
 nSeatsPerRow = 2
 nBlocks = 6
-fracFilled = 1.0
-fracLuggage = 0.5
+fracFilled = 0.5
+fracLuggage = 1.0
 
-airplane1 = animatedAirplane(nRows, nSeatsPerRow, 'flyingCarpet', nBlocks, fracFilled, fracLuggage)
-airplane1.animate('flyingCarpetNEW.mp4')
-print('Flying carpet \t %.2f s' % (airplane1.tBoarding) )
-#airplane2 = animatedAirplane(nRows, nSeatsPerRow, 'backToFront', nBlocks, fracFilled, fracLuggage)
-#airplane2.animate('backToFront.mp4')
-#print('Back to front \t %.2f s' % (airplane2.tBoarding) )
-#irplane3 = animatedAirplane(nRows, nSeatsPerRow, 'random', nBlocks, fracFilled, fracLuggage)
-#airplane3.animate('random.mp4')
-#print('Random \t %.2f s' % (airplane3.tBoarding) )
-#airplane4 = animatedAirplane(nRows, nSeatsPerRow, 'outsideIn', nBlocks, fracFilled, fracLuggage)
-#airplane4.animate('outsideInHIGH.mp4')
-#print('Outside in \t %.2f s' % (airplane4.tBoarding) )
+
+#airplane1 = animatedAirplane(nRows, nSeatsPerRow, 'random', nBlocks, fracFilled, fracLuggage)
+#airplane1.animate('random.mp4')
+#print('Random \t %.2f s' % (airplane1.tBoarding) )
+airplane2 = animatedAirplane(nRows, nSeatsPerRow, 'backToFront', nBlocks, fracFilled, fracLuggage)
+airplane2.animate('backToFront.mp4')
+print('Back to front \t %.2f s' % (airplane2.tBoarding) )
+#airplane3 = animatedAirplane(nRows, nSeatsPerRow, 'outsideIn', nBlocks, fracFilled, fracLuggage)
+#airplane3.animate('outsideIn.mp4')
+#print('Outside in \t %.2f s' % (airplane3.tBoarding) )
+#airplane4 = animatedAirplane(nRows, nSeatsPerRow, 'flyingCarpet', nBlocks, fracFilled, fracLuggage)
+#airplane4.animate('flyingCarpet.mp4')
+#print('Flying carpet \t %.2f s' % (airplane4.tBoarding) )

@@ -6,7 +6,7 @@ clear all
 figure(1)
 clf
 
-dataBoarding = dlmread('boardingData200.txt');
+dataBoarding = dlmread('boardingData500.txt');
 
 randomBoarding = dataBoarding(2:5:end,1:2)/60;
 backToFrontBoarding = dataBoarding(3:5:end,1:2)/60;
@@ -60,7 +60,7 @@ title('Half full airplane, 100\% carry luggage','Interpreter','LaTex','FontSize'
 clear all
 clc
 
-dataBoarding = dlmread('boardingData50Luggage200.txt');
+dataBoarding = dlmread('boardingData50Luggage500.txt');
 
 planeDim = dataBoarding(1:5:end,:);
 
