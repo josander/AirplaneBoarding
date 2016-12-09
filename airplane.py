@@ -10,7 +10,7 @@ class Passenger():
     def __init__(self, seat): # A: removed speed as an argument, as it's drawn from distribution below
         self.seat = seat    # Of form {'side':'L', 'row':0, 'number': 0}. row 0 is by entrance, number 0 is by aisle
         self.speed = random.gauss(self.speedMu, self.speedSigma)
-        while self.speed < (self.speedMu - 2*self.speedSigma):
+        while self.speed < (self.speedMu - 2*self.speedSigma) or self.speed > (self.speedMu + 2*self.speedSigma):
             self.speed = random.gauss(self.speedMu, self.speedSigma)
         self.i = self.nPassenger    # Assigning unique index for every passenger
         self.nPassenger += 1
