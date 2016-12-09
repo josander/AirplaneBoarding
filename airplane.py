@@ -39,10 +39,14 @@ class Airplane():
         # Creating a Passenger for each seat and assigns the seat for them. Passengers to be kept in this list
         # A: changed because speed was removed as parameter self.passengers = [ Passenger(iSeat, 0.5) for iSeat in seatList ]
         self.passengers = [ Passenger(iSeat) for iSeat in seatList ]
-        tempPassengers = self.passengers
+        tempPassengers = range(len(self.passengers))
         random.shuffle(tempPassengers)
-        self.passengers = tempPassengers[0:int(fracFilled*2*self.nRows*self.nSeatsPerRow)]
-        self.passengers.sort()
+        tempPassengers = tempPassengers[0:int(fracFilled*2*self.nRows*self.nSeatsPerRow)]
+        tempPassengers.sort()
+        temp = []
+        for i in tempPassengers:
+            temp.append(self.passengers[i])
+        self.passengers = temp
         self.nPassengers = len(self.passengers)
 
         # Sets 'no luggage'
@@ -50,7 +54,7 @@ class Airplane():
             self.passengers[iPassenger].luggage = False
 
         # A: different ways of ordering passengers
-        # Same objects kept in both list (elements fo lists works as pointers)
+        # Same objects kept in both list (elements of lists works as pointers)
         if self.boardMethod == 'random': # A: completely random boarding
             self.randomBoarding()
         elif self.boardMethod == 'backToFront': # A: the common boarding by zones, from back to front

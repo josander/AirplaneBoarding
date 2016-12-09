@@ -3,11 +3,11 @@ import numpy as np
 import math
 
 
-nIterations = 20
+nIterations = 500
 
 
 # Dimensions of airplane
-nSeatsPerSide = [3]
+nSeatsPerSide = [2, 3]
 nRows = [30]
 fracFilled = 1.0
 fracLuggage = 1.0
