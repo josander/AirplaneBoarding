@@ -264,7 +264,7 @@ if any(any(errorbar_lower~=0))||any(any(errorbar_upper~=0))
 end
 
 % set the x tick labels
-set(gca,'XTick',bar_xtick,'XTickLabel',bar_names);
+set(gca,'XTick',bar_xtick,'XTickLabel',bar_names,'FontSize',14);
 
 % cosmetic fine-tuning of the figure
 set(gca,'XLim',[0 bar_xtick(end)+bar_xtick(1)]); % adjusts the x axis to the plot
