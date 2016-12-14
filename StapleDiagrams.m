@@ -85,3 +85,15 @@ legend('Random','Back to front','Outside in','Flying carpet','Location','northwe
 ylabel('Time [min]','Interpreter','LaTex','FontSize',16)
 title('Full airplane, 50\% cabin baggage','Interpreter','LaTex','FontSize',18)
 ylim([0 14])
+
+
+%% För att plotta gammal data skuggad bakom ny data
+
+n = 5;
+
+errorbar_groups_no_clf([1 2 ; 2 5]',[0.1 0.1 ; 0.4 0.3]','FigID',1,'bar_names',{'4 seats in one row','6 seats in one row'},'bar_colors',colors);
+errorbar_groups_no_clf([1 2 ; 2 5]',[0.1 0.1 ; 0.4 0.3]','FigID',2,'bar_names',{'4 seats in one row','6 seats in one row'},'bar_colors',colors);
+errorbar_groups_no_clf([1 2 ; 2 5]',[0.1 0.1 ; 0.4 0.3]','FigID',1,'bar_names',{'4 seats in one row','6 seats in one row'},'bar_colors',(colors + (n-1)*ones(size(colors))) / n);
+hold on
+errorbar_groups_no_clf([0.5 1 ; 1 3]',[0.1 0.1 ; 0.4 0.3]','FigID',1,'bar_names',{'4 seats in one row','6 seats in one row'},'bar_colors',colors);
+hold off
