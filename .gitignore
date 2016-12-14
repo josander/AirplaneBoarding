@@ -32,6 +32,7 @@
 *.eps
 *.mat
 *.txt
+*.png
 
 # OS generated files #
 .DS_Store

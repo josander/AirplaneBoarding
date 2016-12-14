@@ -86,6 +86,15 @@ nIterationsPerType = 100;
 nBoardings = max(data(:,1));
 nTypes = nBoardings / nIterationsPerType;
 
+titles = {'\textbf{Random}','\textbf{Back to front}','\textbf{Outside in}', '\textbf{Flying carpet}'};
+
+colorsJet = jet;
+colors = colorsJet(1:16:end,:);
+colors(4,:) = [1 1 0.2];
+
+bins = 60:120:max(max(data))+20;
+nBins = length(bins);
+
 for iType = 1:nTypes
     firstBoarding = (iType - 1)*nIterationsPerType + 1;
     lastBoarding = iType*nIterationsPerType;
@@ -93,7 +102,24 @@ for iType = 1:nTypes
     firstLine = find(data(:,1) == firstBoarding , 1);
     lastLine = find(data(:,1) == lastBoarding , 1, 'last');
     
-    figure(iType)
-    hist(data(firstLine:lastLine,2))
-    axis([0 max(max(data)) 0 30*nIterationsPerType])
+    subplot(2,2,iType)
+    hist(data(firstLine:lastLine,2),bins)
+    set(get(gca,'child'),'FaceColor',colors(iType,:),'EdgeColor','k');
+    axis([-5 max(max(data))*(1+1/nBins) 0 30*nIterationsPerType+2000])
+    title(titles{iType},'Interpreter','LaTex','FontSize',18)
+    ax = gca;
+    ax.XTick = bins;
+    ax.XTickLabel  ={'1' '3' '5' '7' '9' '11' '13' '15' '17'};
+    yticklabels = ax.YTick/ nIterationsPerType;
+    ax.YTickLabel = yticklabels;
+    set(gca,'FontSize',14)
+    xlabel('Time [min]','Interpreter','LaTex','FontSize',16)
+    ylabel('Passengers','Interpreter','LaTex','FontSize',16)
+    
 end
+
+%saveas(gcf,'waitingTimeDist.eps','epsc')
+saveas(gcf,'waitingTimeDist.png','png')
+
+%% Playing  with histograms to see if we can get them shaded
+

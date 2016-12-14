@@ -11,7 +11,7 @@ nRows = rowList[7::1]
 nRows = [30]
 
 # Nbr of blocks to board
-nBlocks = 5
+nBlocks = 1
 
 timeForRandom = [nIterations]
 timeForBackToFront = [nIterations]
@@ -28,6 +28,7 @@ boardingID = 0
 for iSeatsPerSide in range(len(nSeatsPerSide)):
     for iRows in range(len(nRows)):
 
+        nBlocks = 2
         # Random boarding
         for iIteration in range(nIterations):
             myAirplane = airplane.Airplane(nRows[iRows], nSeatsPerSide[iSeatsPerSide], 'random', nBlocks)
@@ -52,6 +53,7 @@ for iSeatsPerSide in range(len(nSeatsPerSide)):
             for waitTime in myAirplane.reportWaitingTimes():
                 times.write("%d, %.2f\n" % (boardingID, waitTime))
 
+        nBlocks = nSeatsPerSide[0]*2
         # Flying carpet boarding
         for iIteration in range(nIterations):
             myAirplane = airplane.Airplane(nRows[iRows], nSeatsPerSide[iSeatsPerSide], 'flyingCarpet', nBlocks)
