@@ -97,13 +97,13 @@ class animatedAirplane(airplane.Airplane):
         Writer = anim.writers['ffmpeg']
         writer = Writer(fps=60, metadata=dict(artist='Me'), bitrate=1800)
 
-        a = anim.FuncAnimation(fig, self.updatefig, interval = 25, save_count = 500, blit = True)
+        a = anim.FuncAnimation(fig, self.updatefig, interval = 25, save_count = 200, blit = True)
         a.save(filename, writer=writer)
 
 nRows = 10
-nSeatsPerRow = 3
+nSeatsPerRow = 2
 nBlocks = 6
-fracFilled = 0.5
+fracFilled = 1.0
 fracLuggage = 1.0
 
 

@@ -10,13 +10,13 @@ nIterations = 500
 nSeatsPerSide = [2, 3]
 nRows = [30]
 fracFilled = 1.0
-fracLuggage = 1.0
+fracLuggage = 0.5
 nBlocks = 1         # Will be changed later in the code
 threshold = 6000
 
 
 # File to print data
-filename = 'boardingData.txt'
+filename = 'boardingData50Luggage500.txt'
 f = open(filename,'w')
 
 for iSeatsPerSide in range(len(nSeatsPerSide)):

@@ -47,7 +47,7 @@ end
 
 clc
 
-data = dlmread('boardingDataBlocks2000its.txt');
+data = dlmread('boardingDataBlocks500.txt');
 
 nBlocks = data(1:5:end,3);
 nSeats = data(1,2);
@@ -58,21 +58,26 @@ backToFrontBoarding = data(3:5:end,:)/60;
 outsideInBoarding = data(4:5:end,:)/60;
 flyingCarpetBoarding = data(5:5:end,:)/60;
 
+colorsJet = jet;
+colors = colorsJet(1:16:end,:);
+
+colors(4,:) = [1 0.93 0.2];
 
 figure(3)
 clf
-plot(nBlocks,randomBoarding(1:end,1))
+plot(nBlocks,randomBoarding(1:end,1),'LineWidth',1.5,'Color',colors(1,:))
 hold on
-plot(nBlocks,backToFrontBoarding(1:end,1))
-plot(nBlocks,outsideInBoarding(1:end,1))
-plot(nBlocks,flyingCarpetBoarding(1:end,1))
-legend('Random','Back to front','Outside in','Flying carpet');
-ylabel('Time','Interpreter','LaTex')
-xlabel('Blocks','Interpreter','LaTex')
-text = strcat(num2str(nSeats),' seats on one side,~',num2str(nRows),' rows');
-title(text,'Interpreter','LaTex')
+plot(nBlocks,backToFrontBoarding(1:end,1),'LineWidth',1.75,'Color',colors(2,:))
+plot(nBlocks,outsideInBoarding(1:end,1),'LineWidth',1.75,'Color',colors(3,:))
+plot(nBlocks,flyingCarpetBoarding(1:end,1),'LineWidth',1.75,'Color',colors(4,:))
+h_legend = legend('Random','Back to front','Outside in','Flying carpet','Location','northwest');
+ylabel('Time [min]','Interpreter','LaTex','FontSize',16)
+xlabel('Blocks','Interpreter','LaTex','FontSize',16)
+text = strcat('Full airplane, 100\% cabin baggage');
+title(text,'Interpreter','LaTex','FontSize',18)
 
-
+set(h_legend,'FontSize',14);
+set(gca,'FontSize',14);
 %% waiting times
 
 clear all

@@ -1,18 +1,18 @@
 import airplane
 import numpy as np
 
-nIterations = 2000
+nIterations = 500
 
 # Dimensions of airplane
 nSeatsPerSide = [3]
 nRows = [30]
-listBlocks = [2, 4, 6, 8, 10, 12]
+listBlocks = [2, 4, 6, 8, 10, 12, 14]
 fracFilled = 1.0
-fracLuggage = 0.5
+fracLuggage = 1.0
 threshold = 6000
 
 # File to print data
-filename = 'boardingDataBlocks2000its.txt'
+filename = 'boardingDataBlocks500.txt'
 f = open(filename,'w')
 
 for iBlocks in range(len(listBlocks)):
